@@ -1,0 +1,3 @@
+INPUT                  = @CMAKE_SOURCE_DIR@/include
+
+FILE_PATTERNS          = *.cc *.cpp *.h *.hh *.hxx
