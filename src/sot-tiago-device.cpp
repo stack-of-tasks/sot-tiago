@@ -106,6 +106,7 @@ void SoTTiagoDevice::setSensors(map<string,dgsot::SensorValues> &SensorsIn)
   sotDEBUGIN(25) ;
   map<string,dgsot::SensorValues>::iterator it;
   int t = stateSOUT.getTime () + 1;
+  bool setRobotState = false;
 
   it = SensorsIn.find("forces");
   if (it!=SensorsIn.end())
@@ -143,8 +144,17 @@ void SoTTiagoDevice::setSensors(map<string,dgsot::SensorValues> &SensorsIn)
       dgRobotState_ (i) = 0.;
     for (unsigned i = 0; i < anglesIn.size(); ++i)
       dgRobotState_ (i + 6) = anglesIn[i];
-    robotState_.setConstant(dgRobotState_);
-    robotState_.setTime(t);
+    setRobotState = true;
+  }
+
+  it = SensorsIn.find("odometry");
+  if (it!=SensorsIn.end())
+  {
+    const vector<double>& odomIn = it->second.getValues();
+    dgRobotState_ (0) = odomIn[0];
+    dgRobotState_ (1) = odomIn[1];
+    dgRobotState_ (5) = odomIn[5];
+    setRobotState = true;
   }
 
   it = SensorsIn.find("accelerometer_0");
@@ -212,6 +222,11 @@ void SoTTiagoDevice::setSensors(map<string,dgsot::SensorValues> &SensorsIn)
     d_gainsSOUT_.setTime(t);
   }
 
+  if (setRobotState) {
+    robotState_.setConstant(dgRobotState_);
+    robotState_.setTime(t);
+  }
+
   sotDEBUGOUT(25);
 }
 
@@ -236,7 +251,6 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
   ODEBUG5FULL("start");
   sotDEBUGIN(25) ;
   vector<double> anglesOut;
-  anglesOut.resize(state_.size());
   
   // Integrate control
   increment(timestep_);
@@ -249,6 +263,12 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
 			     (state_ - previousState_) : state_ ) );
   previousState_ = state_;
 
+  std::vector<double> baseVel(2);
+  baseVel[0] = vel_control_[0]; // linear  velocity along x
+  baseVel[1] = vel_control_[5]; // angular velocity around z
+
+  controlOut["base-vel"].setValues(baseVel);
+
   // Specify the joint values for the controller.
   if ((int)anglesOut.size()!=state_.size()-6)
     anglesOut.resize(state_.size()-6);
@@ -257,23 +277,25 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
     anglesOut[i-6] = state_(i);
   controlOut["control"].setValues(anglesOut);
   // Read zmp reference from input signal if plugged
-  int time = controlSIN.getTime ();
-  zmpSIN.recompute (time + 1);
-  // Express ZMP in free flyer reference frame
-  dg::Vector zmpGlobal (4);
-  for (unsigned int i = 0; i < 3; ++i)
-    zmpGlobal(i) = zmpSIN(time + 1)(i);
-  zmpGlobal(3) = 1.;
-  dgsot::MatrixHomogeneous inversePose;
+  if (zmpSIN.isPlugged()) {
+    int time = controlSIN.getTime ();
+    zmpSIN.recompute (time + 1);
+    // Express ZMP in free flyer reference frame
+    dg::Vector zmpGlobal (4);
+    for (unsigned int i = 0; i < 3; ++i)
+      zmpGlobal(i) = zmpSIN(time + 1)(i);
+    zmpGlobal(3) = 1.;
+    dgsot::MatrixHomogeneous inversePose;
 
-  inversePose = freeFlyerPose().inverse(Eigen::Affine);
-  dg::Vector localZmp(4); localZmp = inversePose.matrix() * zmpGlobal;
-  vector<double> ZMPRef(3);
-  for(unsigned int i=0;i<3;++i)
-    ZMPRef[i] = localZmp(i);
+    inversePose = freeFlyerPose().inverse(Eigen::Affine);
+    dg::Vector localZmp(4); localZmp = inversePose.matrix() * zmpGlobal;
+    vector<double> ZMPRef(3);
+    for(unsigned int i=0;i<3;++i)
+      ZMPRef[i] = localZmp(i);
 
-  controlOut["zmp"].setName("zmp");
-  controlOut["zmp"].setValues(ZMPRef);
+    controlOut["zmp"].setName("zmp");
+    controlOut["zmp"].setValues(ZMPRef);
+  }
 
   // Update position of freeflyer in global frame
   Eigen::Vector3d transq_(freeFlyerPose().translation());
