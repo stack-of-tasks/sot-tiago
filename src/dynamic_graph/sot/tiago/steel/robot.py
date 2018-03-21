@@ -18,19 +18,18 @@
 from dynamic_graph.sot.tiago import Tiago
 import numpy as np
 
-class Robot (Tiago):
+class TiagoSteel (Tiago):
     """
     This class instantiates LAAS TIAGO Robot
     """
 
 
-    halfSitting = (0.0, 0.0,  1.018213,  0.00  ,  0.0, 0.0,                         #Free flyer
-                   0.0,  0.0, -0.411354,  0.859395, -0.448041, -0.001708, #Left Leg
-                   0.0,  0.0, -0.411354,  0.859395, -0.448041, -0.001708, #Right Leg
-                   0.0 ,  0.006761,                                                 #Chest
-                   0.25847 ,  0.173046, -0.0002, -0.525366, 0.0, -0.0,  0.1, -0.005,        #Left Arm
-                  -0.25847 , -0.173046, 0.0002  , -0.525366, 0.0,  0.0,  0.1,-0.005,      #Right Arm
-                   0.,  0.                                                          #Head
+    halfSitting = (0., 0., 0., 0., 0., 0.,
+                   0.,                                               # Torso
+                   0.,  -1.569796, -1.569796, 2.355194, 0., 0.,  0., # Arm
+                   0.,  0.,                                          # Gripper (left, right)
+                   0.,  0.,                                          # Head
+                   0.,  0.,                                          # Wheel (left, right)
                )
 
     def __init__(self, name,

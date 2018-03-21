@@ -18,7 +18,7 @@ from __future__ import print_function
 
 import numpy as np
 
-from dynamic_graph.sot.dynamics_pinocchio.humanoid_robot import AbstractHumanoidRobot
+from dynamic_graph.sot.tiago.robot import AbstractRobot
 from dynamic_graph.sot.dynamics_pinocchio import DynamicPinocchio
 from dynamic_graph import plug
 
@@ -34,19 +34,11 @@ def matrixToTuple(M):
         res.append(tuple(i))
     return tuple(res)
 
-class Tiago(AbstractHumanoidRobot):
+class Tiago(AbstractRobot):
     """
     This class defines a Tiago robot
     """
 
-    forceSensorInLeftAnkle =  ((1.,0.,0.,0.),
-                               (0.,1.,0.,0.),
-                               (0.,0.,1.,-0.107),
-                               (0.,0.,0.,1.))
-    forceSensorInRightAnkle = ((1.,0.,0.,0.),
-                               (0.,1.,0.,0.),
-                               (0.,0.,1.,-0.107),
-                               (0.,0.,0.,1.))
     """
     TODO: Confirm the position and existence of these sensors
     accelerometerPosition = np.matrix ((
@@ -71,31 +63,27 @@ class Tiago(AbstractHumanoidRobot):
         return res
 
     def __init__(self, name, initialConfig, device = None, tracer = None):
-        self.OperationalPointsMap = {'left-wrist'  : 'arm_left_7_joint',
-                                     'right-wrist' : 'arm_right_7_joint',
-                                     'left-ankle'  : 'leg_left_6_joint',
-                                     'right-ankle' : 'leg_right_6_joint',
+        self.OperationalPointsMap = {'wrist'       : 'arm_7_joint',
+                                     'right-wheel' : 'wheel_right_joint',
+                                     'left-wheel'  : 'wheel_left_joint',
+                                     'mobilebase'  : 'root_joint',
+                                     'footprint'   : 'base_footprint_joint',
                                      'gaze'        : 'head_2_joint',
-                                     'waist'       : 'root_joint',
-                                     'chest'       : 'torso_2_joint'}
+                                     }
 
         from rospkg import RosPack
         rospack = RosPack()
-        urdfPath = rospack.get_path('tiago_data')+"/robots/tiago_reduced.urdf"
-        urdfDir = [rospack.get_path('tiago_data')+"/../"]
+        urdfPath = rospack.get_path('tiago_description')+"/urdf/tiago_steel.urdf"
+        urdfDir = [rospack.get_path('tiago_description')+"/../"]
 
         # Create a wrapper to access the dynamic model provided through an urdf file.
         from pinocchio.robot_wrapper import RobotWrapper
         import pinocchio as se3
-        from dynamic_graph.sot.dynamics_pinocchio import fromSotToPinocchio
         pinocchioRobot = RobotWrapper(urdfPath, urdfDir, se3.JointModelFreeFlyer())
         self.pinocchioModel = pinocchioRobot.model
         self.pinocchioData = pinocchioRobot.data
 
-        AbstractHumanoidRobot.__init__ (self, name, tracer)
-
-        self.OperationalPoints.append('waist')
-        self.OperationalPoints.append('chest')
+        AbstractRobot.__init__ (self, name, tracer)
 
         # Create rigid body dynamics model and data (pinocchio) 
         self.dynamic = DynamicPinocchio(self.name + "_dynamic")
@@ -110,13 +98,6 @@ class Tiago(AbstractHumanoidRobot):
         self.halfSitting = initialConfig
         self.device.set(self.halfSitting)
         plug(self.device.state, self.dynamic.position)
-
-        self.AdditionalFrames.append(
-            ("leftFootForceSensor",
-             self.forceSensorInLeftAnkle, self.OperationalPointsMap["left-ankle"]))
-        self.AdditionalFrames.append(
-            ("rightFootForceSensor",
-             self.forceSensorInRightAnkle, self.OperationalPointsMap["right-ankle"]))
         
         self.dimension = self.dynamic.getDimension()
         self.plugVelocityFromDevice = True
