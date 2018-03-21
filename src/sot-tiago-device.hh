@@ -58,6 +58,15 @@ dgsot::Device
 
 protected:
 
+  void setClosedLoop (const bool& closedLoop)
+  {
+    closedLoop_ = closedLoop;
+  };
+
+  /// \brief Whether the control of the base should be expressed in odometry
+  ///        frame of base frame.
+  bool closedLoop_;
+
   /// \brief Current integration step.
   double timestep_;
   

@@ -53,12 +53,32 @@
 
 using namespace std;
 
+Eigen::Matrix3d rpy (const double roll, double pitch, double yaw)
+{
+  Eigen::Matrix3d R;
+  // Build rotation matrix as a vector of colums
+  R (0,0) = cos(pitch)*cos(yaw);
+  R (1,0) = cos(pitch)*sin(yaw);
+  R (2,0) = -sin(pitch);
+
+  R (0,1) = sin(roll)*sin(pitch)*cos(yaw) - cos(roll)*sin(yaw);
+  R (1,1) = sin(roll)*sin(pitch)*sin(yaw) + cos(roll)*cos(yaw);
+  R (2,1) = sin(roll)*cos(pitch);
+
+  R (0,2) = cos(roll)*sin(pitch)*cos(yaw) + sin(roll)*sin(yaw);
+  R (1,2) = cos(roll)*sin(pitch)*sin(yaw) - sin(roll)*cos(yaw);
+  R (2,2) = cos(roll)*cos(pitch);
+
+  return R;
+}
+
 const double SoTTiagoDevice::TIMESTEP_DEFAULT = 0.005;
 
 DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(SoTTiagoDevice,"DeviceTiago");
 
 SoTTiagoDevice::SoTTiagoDevice(std::string RobotName):
   dgsot::Device(RobotName),
+  closedLoop_ (false),
   timestep_(TIMESTEP_DEFAULT),
   previousState_ (),
   baseff_ (),
@@ -95,6 +115,15 @@ SoTTiagoDevice::SoTTiagoDevice(std::string RobotName):
   addCommand("increment",
              makeCommandVoid1((Device&)*this,
                               &Device::increment, docstring));
+
+  docstring =
+      "    Set the integration in closed loop (express mobile base velocity in odometry frame)\n"
+      "\n"
+      "      - Input: boolean\n"
+      "\n";
+  addCommand("setClosedLoop",
+             makeCommandVoid1(*this,
+                              &SoTTiagoDevice::setClosedLoop, docstring));
   sotDEBUGOUT(25);
 }
 
@@ -251,6 +280,12 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
   ODEBUG5FULL("start");
   sotDEBUGIN(25) ;
   vector<double> anglesOut;
+
+  Eigen::Matrix3d R;
+  if (closedLoop_)
+    R = rpy(dgRobotState_[3],dgRobotState_[4],dgRobotState_[5]);
+  else
+    R = rpy(state_[3],state_[4],state_[5]);
   
   // Integrate control
   increment(timestep_);
@@ -264,8 +299,16 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
   previousState_ = state_;
 
   std::vector<double> baseVel(2);
-  baseVel[0] = vel_control_[0]; // linear  velocity along x
-  baseVel[1] = vel_control_[5]; // angular velocity around z
+  baseVel[0] = R.transpose().row(0) * vel_control_.head<3>();
+  baseVel[1] = R.transpose().row(2) * vel_control_.segment<3>(3);
+  Eigen::Vector3d v;
+  v = R.transpose() * vel_control_.head<3>();
+  if (v.tail<1>().norm() >= 1e-5) {
+    sotDEBUG (20) << "Control should be zero on the z axes: " << v.transpose() << std::endl;
+  }
+  v = R.transpose() * vel_control_.segment<3>(3);
+  if (v.head<2>().norm() >= 1e-5)
+    sotDEBUG (20) << "Control should be zero on the rx/ry axes: " << v.transpose() << std::endl;
 
   controlOut["base-vel"].setValues(baseVel);
 
