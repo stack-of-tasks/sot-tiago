@@ -127,4 +127,12 @@ class Tiago(AbstractRobot):
         if self.OperationalPointsMap is not None:
             self.initializeOpPoints()
 
+    def setClosedLoop(self, closedLoop):
+        if closedLoop:
+            plug(self.device.robotState, self.dynamic.position)
+            self.device.setClosedLoop (True)
+        else:
+            plug(self.device.state, self.dynamic.position)
+            self.device.setClosedLoop (False)
+
 __all__ = [Tiago]
