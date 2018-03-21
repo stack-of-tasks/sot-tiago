@@ -72,7 +72,7 @@ Eigen::Matrix3d rpy (const double roll, double pitch, double yaw)
   return R;
 }
 
-const double SoTTiagoDevice::TIMESTEP_DEFAULT = 0.005;
+const double SoTTiagoDevice::TIMESTEP_DEFAULT = 0.001;
 
 DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(SoTTiagoDevice,"DeviceTiago");
 
