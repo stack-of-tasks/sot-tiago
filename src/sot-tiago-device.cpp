@@ -153,7 +153,7 @@ void SoTTiagoDevice::setSensors(map<string,dgsot::SensorValues> &SensorsIn)
     const vector<double>& odomIn = it->second.getValues();
     dgRobotState_ (0) = odomIn[0];
     dgRobotState_ (1) = odomIn[1];
-    dgRobotState_ (5) = odomIn[5];
+    dgRobotState_ (5) = odomIn[2];
     setRobotState = true;
   }
 
