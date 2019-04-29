@@ -217,7 +217,7 @@ void SoTTiagoDevice::setSensors(map<string,dgsot::SensorValues> &SensorsIn)
     pseudoTorqueSOUT.setConstant(torques_);
     pseudoTorqueSOUT.setTime(t);
   }
-  
+
   it = SensorsIn.find("currents");
   if (it!=SensorsIn.end())
   {
@@ -286,12 +286,12 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
     R = rpy(dgRobotState_[3],dgRobotState_[4],dgRobotState_[5]);
   else
     R = rpy(state_[3],state_[4],state_[5]);
-  
+
   // Integrate control
   increment(timestep_);
   sotDEBUG (25) << "state = " << state_ << std::endl;
   sotDEBUG (25) << "diff  = " << ((previousState_.size() == state_.size())?
-				  (state_ - previousState_) : state_ ) 
+				  (state_ - previousState_) : state_ )
 		<< std::endl;
   ODEBUG5FULL("state = "<< state_);
   ODEBUG5FULL("diff  = " << ((previousState_.size() == state_.size())?
@@ -308,7 +308,7 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
   }
   v = R.transpose() * vel_control_.segment<3>(3);
   if (v.head<2>().norm() >= 1e-5)
-    sotDEBUG (20) << "Control should be zero on the rx/ry axes: " << v.transpose() << std::endl;
+    { sotDEBUG (20) << "Control should be zero on the rx/ry axes: " << v.transpose() << std::endl;}
 
   controlOut["base-vel"].setValues(baseVel);
 
@@ -346,7 +346,7 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
 
   //translation
   for(int i=0; i<3; i++) baseff_[i] = transq_(i);
-  
+
   //rotation: quaternion
   baseff_[3] = qt_.w();
   baseff_[4] = qt_.x();
