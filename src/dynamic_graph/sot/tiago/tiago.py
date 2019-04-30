@@ -79,7 +79,7 @@ class Tiago(AbstractRobot):
         from pinocchio.robot_wrapper import RobotWrapper
         import pinocchio as se3
         from dynamic_graph.sot.dynamics_pinocchio import fromSotToPinocchio
-        pinocchioRobot = RobotWrapper
+        pinocchioRobot = RobotWrapper()
         pinocchioRobot.initFromURDF(self.urdfFile,
                                     self.urdfDir,
                                     se3.JointModelFreeFlyer())
