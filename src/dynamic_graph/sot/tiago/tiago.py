@@ -22,7 +22,6 @@ from dynamic_graph.sot.tiago.robot import AbstractRobot
 from dynamic_graph.sot.dynamics_pinocchio import DynamicPinocchio
 from dynamic_graph import plug
 
-from dynamic_graph.ros import RosRobotModel
 import pinocchio as se3
 from rospkg import RosPack
 
