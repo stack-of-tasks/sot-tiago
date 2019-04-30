@@ -78,13 +78,18 @@ class Tiago(AbstractRobot):
         # Create a wrapper to access the dynamic model provided through an urdf file.
         from pinocchio.robot_wrapper import RobotWrapper
         import pinocchio as se3
-        pinocchioRobot = RobotWrapper(urdfPath, urdfDir, se3.JointModelFreeFlyer())
+        from dynamic_graph.sot.dynamics_pinocchio import fromSotToPinocchio
+        pinocchioRobot = RobotWrapper
+        pinocchioRobot.initFromURDF(self.urdfFile,
+                                    self.urdfDir,
+                                    se3.JointModelFreeFlyer())
+
         self.pinocchioModel = pinocchioRobot.model
         self.pinocchioData = pinocchioRobot.data
 
         AbstractRobot.__init__ (self, name, tracer)
 
-        # Create rigid body dynamics model and data (pinocchio) 
+        # Create rigid body dynamics model and data (pinocchio)
         self.dynamic = DynamicPinocchio(self.name + "_dynamic")
         self.dynamic.setModel(self.pinocchioModel)
         self.dynamic.setData(self.pinocchioData)
@@ -92,12 +97,12 @@ class Tiago(AbstractRobot):
 
         # Initialize device
         self.device = device
-
+        self.timeStep = self.device.getTimeStep()
         self.device.resize(self.dynamic.getDimension())
         self.halfSitting = initialConfig
         self.device.set(self.halfSitting)
         plug(self.device.state, self.dynamic.position)
-        
+
         self.dimension = self.dynamic.getDimension()
         self.plugVelocityFromDevice = True
         self.dynamic.displayModel()
@@ -111,7 +116,7 @@ class Tiago(AbstractRobot):
         else:
             self.dynamic.velocity.value = self.dimension*(0.,)
 
-        # Initialize acceleration derivator if chosen            
+        # Initialize acceleration derivator if chosen
         if self.enableAccelerationDerivator:
             self.accelerationDerivator = \
                 Derivator_of_Vector('accelerationDerivator')
