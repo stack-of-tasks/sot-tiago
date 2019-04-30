@@ -32,7 +32,7 @@ void SoTTiagoSteelController::startupPython()
   std::ofstream aof(LOG_PYTHON_TIAGOSTEEL.c_str());
   runPython
     (aof,
-     "from dynamic_graph_sot_tiago.steel.prologue import robot",
+     "from dynamic_graph.sot.tiago.steel.prologue import robot",
      *interpreter_);
   aof.close();
 }
