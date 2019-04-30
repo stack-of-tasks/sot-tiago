@@ -72,7 +72,7 @@ class Tiago(AbstractRobot):
 
         from rospkg import RosPack
         rospack = RosPack()
-        urdfPath = rospack.get_path('tiago_description')+"/urdf/tiago_steel.urdf"
+        urdfFile = rospack.get_path('tiago_description')+"/urdf/tiago_steel.urdf"
         urdfDir = [rospack.get_path('tiago_description')+"/../"]
 
         # Create a wrapper to access the dynamic model provided through an urdf file.
