@@ -50,6 +50,7 @@ ADD_REQUIRED_DEPENDENCY("dynamic-graph-python >= 3.0.0")
 ADD_REQUIRED_DEPENDENCY("dynamic_graph_bridge_msgs")
 ADD_REQUIRED_DEPENDENCY("dynamic_graph_bridge >= 3.0")
 
+ADD_OPTIONAL_DEPENDENCY("tiago_data")
 # Search for dependencies.
 # Boost
 SET(BOOST_COMPONENTS filesystem system thread)
@@ -66,6 +67,17 @@ SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Add subdirectories.
 ADD_SUBDIRECTORY(src)
+
+IF(TIAGO_DATA_FOUND)
+  INSTALL(FILES
+    ${PROJECT_SOURCE_DIR}/tests/test.py
+    ${PROJECT_SOURCE_DIR}/tests/appli.py
+    ${PROJECT_SOURCE_DIR}/tests/stop-controllers.py
+    DESTINATION
+    ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/tests
+    )
+
+ENDIF(TIAGO_DATA_FOUND)
 
 SETUP_PROJECT_FINALIZE()
 SETUP_PROJECT_CPACK()
