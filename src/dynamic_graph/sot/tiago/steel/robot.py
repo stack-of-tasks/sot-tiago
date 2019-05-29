@@ -27,9 +27,8 @@ class TiagoSteel (Tiago):
     halfSitting = (0., 0., 0., 0., 0., 0.,
                    0.,                                               # Torso
                    0.,  -1.569796, -1.569796, 2.355194, 0., 0.,  0., # Arm
-                   0.,  0.,                                          # Gripper (left, right)
+                   0.,                                               # Gripper (left, right)
                    0.,  0.,                                          # Head
-                   0.,  0.,                                          # Wheel (left, right)
                )
 
     def __init__(self, name,
