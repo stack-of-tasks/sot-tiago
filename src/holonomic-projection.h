@@ -10,6 +10,20 @@
 #include <sot/core/matrix-geometry.hh>
 
 namespace dynamicgraph {
+  /// Create a constraint to take into account:
+  /// - the holonomic system: the base velocity, expressed in the base frame,
+  ///                         is of the form ( v_lin, 0, 0, 0, 0, w_ang)
+  /// - the relation between the wheels velocity and the base velocity.
+  ///
+  /// At the moment, only two wheels are considered.
+  ///
+  /// The signal projectionSOUT should be plugged into SoT.proj0. The signal
+  /// value is a matrix K such that \f$ \dot{q} = K * u \f$
+  /// where:
+  /// - \f$ \dot{q} \in \mathcal{se}(3)\times\mathcal{R}^n \f$ is the velocity
+  ///   of the underactuated robot,
+  /// - \f$ u \in \mathcal{R}^2 \times \mathcal{R}^{n-2} \f$ is the velocity of
+  ///   the actuated robot, the two first being the linear and angular velocity.
   class HolonomicProjection : public Entity
   {
   public:
@@ -36,6 +50,21 @@ namespace dynamicgraph {
     /// Number of DoF of the robot
     int nv_;
     SignalPtr <sot::MatrixHomogeneous, int> basePoseSIN;
+
+    /// The index of the wheels DoF.
+    int leftWheelIdx_, rightWheelIdx_;
+
+    /// Wheel separation, wrt the midpoint of the wheel width:
+    double wheelSeparation_;
+
+    /// Wheel radius (assuming it's the same for the left and right wheels):
+    double wheelRadius_;
+
+    /// Calibration of the wheels separation and radii.
+    SignalPtr <double, int> wheelSeparationMultiplierSIN,
+                            leftWheelRadiusMultiplierSIN,
+                            rightWheelRadiusMultiplierSIN;
+
     SignalTimeDependent <Matrix, int> projectionSOUT;
   };
 
