@@ -9,7 +9,9 @@
 
 from dynamic_graph.sot.tiago.diff_drive_controller import HolonomicProjection
 projection = HolonomicProjection("projection")
-projection.setSize (8)
+projection.setSize (10)
+projection.setWheelSeparation (0.25)
+projection.setWheelRadius     (0.2)
 
 from dynamic_graph.sot.core import PoseRollPitchYawToMatrixHomo
 matrixHomo = PoseRollPitchYawToMatrixHomo('convert')
@@ -23,6 +25,10 @@ def compute (pose):
     matrixHomo.sin.value = pose
     projection.projection.recompute (t+1)
     return projection.projection.value
+
+def setWheels ():
+    projection.setLeftWheel  (7)
+    projection.setRightWheel (8)
 
 zero = (0, 0, 0, 0, 0, 0)
 
