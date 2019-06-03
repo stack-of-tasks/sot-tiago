@@ -159,7 +159,7 @@ namespace dynamicgraph {
     bool openLoop_;
 
     /// Odometry related:
-    Odometry odometry_;
+    details::Odometry odometry_;
 
     /// Wheel separation, wrt the midpoint of the wheel width:
     double wheelSeparation_;
