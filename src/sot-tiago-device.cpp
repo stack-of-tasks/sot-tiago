@@ -298,26 +298,15 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
 			     (state_ - previousState_) : state_ ) );
   previousState_ = state_;
 
-  std::vector<double> baseVel(2);
-  baseVel[0] = R.transpose().row(0) * vel_control_.head<3>();
-  baseVel[1] = R.transpose().row(2) * vel_control_.segment<3>(3);
-  Eigen::Vector3d v;
-  v = R.transpose() * vel_control_.head<3>();
-  if (v.tail<1>().norm() >= 1e-5) {
-    sotDEBUG (20) << "Control should be zero on the z axes: " << v.transpose() << std::endl;
-  }
-  v = R.transpose() * vel_control_.segment<3>(3);
-  if (v.head<2>().norm() >= 1e-5)
-    { sotDEBUG (20) << "Control should be zero on the rx/ry axes: " << v.transpose() << std::endl;}
-
-  controlOut["base-vel"].setValues(baseVel);
-
   // Specify the joint values for the controller.
-  if ((int)anglesOut.size()!=state_.size()-6)
-    anglesOut.resize(state_.size()-6);
+  anglesOut.resize(state_.size()-6);
 
   for(unsigned int i=6; i < state_.size();++i)
     anglesOut[i-6] = state_(i);
+  // Control wheels in velocity.
+  // 6 and 7 correspond to left and right wheel joints.
+  anglesOut[0] = vel_control_(6);
+  anglesOut[1] = vel_control_(7);
   controlOut["control"].setValues(anglesOut);
   // Read zmp reference from input signal if plugged
   if (zmpSIN.isPlugged()) {

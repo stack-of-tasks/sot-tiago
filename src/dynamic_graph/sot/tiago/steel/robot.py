@@ -25,6 +25,7 @@ class TiagoSteel (Tiago):
 
 
     halfSitting = (0., 0., 0., 0., 0., 0.,
+                   0., 0.,                                           # Wheels
                    0.,                                               # Torso
                    0.,  -1.569796, -1.569796, 2.355194, 0., 0.,  0., # Arm
                    0.,                                               # Gripper (left, right)
