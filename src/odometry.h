@@ -61,6 +61,7 @@ namespace details
   /**
    * \brief The Odometry class handles odometry readings
    * (2D pose and velocity with related timestamp)
+   * \deprecated TO BE DELETED
    */
   class Odometry
   {

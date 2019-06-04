@@ -55,6 +55,7 @@ namespace dynamicgraph {
    *  - the wheels have the same parent frame
    *  - a wheel collision geometry is a cylinder or sphere in the urdf
    *  - a wheel joint frame center's vertical projection on the floor must lie within the contact patch
+   * \deprecated TO BE DELETED
    */
   class DiffDriveController : public Entity
   {
