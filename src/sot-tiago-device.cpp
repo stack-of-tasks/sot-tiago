@@ -13,6 +13,7 @@
 
 #include <fstream>
 #include <map>
+#include <stdlib.h>
 
 #if DEBUG
 #define ODEBUG(x) std::cout << x << std::endl
@@ -143,7 +144,9 @@ void SoTTiagoDevice::setSensors(map<string,dgsot::SensorValues> &SensorsIn)
 
     // Implements force recollection.
     const vector<double>& forcesIn = it->second.getValues();
-    for(int i=0;i<4;++i)
+    assert (std::div(forcesIn.size(), 6).rem == 0);
+    int K = forcesIn.size() / 6;
+    for(int i=0;i<K;++i)
     {
       for(int j=0;j<6;++j)
         dgforces_(j) = forcesIn[i*6+j];
