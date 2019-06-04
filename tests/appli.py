@@ -11,6 +11,12 @@ taskRH.feature.frame('desired')
 from dynamic_graph.sot.tiago.diff_drive_controller import HolonomicProjection
 projection = HolonomicProjection("projection")
 projection.setSize (robot.dynamic.getDimension())
+projection.setLeftWheel (6)
+projection.setRightWheel (7)
+# The wheel separation could be obtained with pinocchio.
+# See pmb2_description/urdf/base.urdf.xacro
+projection.setWheelRadius (0.0985)
+projection.setWheelSeparation (0.4044)
 plug (robot.dynamic.mobilebase, projection.basePose)
 
 from dynamic_graph.sot.core import SOT
