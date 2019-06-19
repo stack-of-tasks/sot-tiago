@@ -80,7 +80,6 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(SoTTiagoDevice,"DeviceTiago");
 SoTTiagoDevice::SoTTiagoDevice(std::string RobotName):
   dgsot::Device(RobotName),
   closedLoop_ (false),
-  timestep_(TIMESTEP_DEFAULT),
   previousState_ (),
   baseff_ (),
   accelerometerSOUT_
@@ -96,6 +95,7 @@ SoTTiagoDevice::SoTTiagoDevice(std::string RobotName):
   torques_()
 {
   RESETDEBUG5();
+  timestep_ = TIMESTEP_DEFAULT;
   sotDEBUGIN(25) ;
   for( int i=0;i<4;++i ) { withForceSignals[i] = true; }
   signalRegistration (accelerometerSOUT_ << gyrometerSOUT_

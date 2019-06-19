@@ -66,9 +66,6 @@ protected:
   /// \brief Whether the control of the base should be expressed in odometry
   ///        frame of base frame.
   bool closedLoop_;
-
-  /// \brief Current integration step.
-  double timestep_;
   
   /// \brief Previous robot configuration.
   dg::Vector previousState_;
