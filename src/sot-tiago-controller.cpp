@@ -46,13 +46,13 @@ void workThread(SoTTiagoController *aSoTTiago)
 }
 
 SoTTiagoController::SoTTiagoController(std::string RobotName):
-  device_(RobotName)
+  device_(new SoTTiagoDevice (RobotName))
 {
   init();
 }
 
 SoTTiagoController::SoTTiagoController(const char robotName[]):
-  device_(robotName)
+  device_(new SoTTiagoDevice (robotName))
 {
   init();
 }
@@ -77,20 +77,20 @@ SoTTiagoController::~SoTTiagoController()
 void SoTTiagoController::
 setupSetSensors(map<string,dgsot::SensorValues> &SensorsIn)
 {
-  device_.setupSetSensors(SensorsIn);
+  device_->setupSetSensors(SensorsIn);
 }
 
 
 void SoTTiagoController::
 nominalSetSensors(map<string,dgsot::SensorValues> &SensorsIn)
 {
-  device_.nominalSetSensors(SensorsIn);
+  device_->nominalSetSensors(SensorsIn);
 }
 
 void SoTTiagoController::
 cleanupSetSensors(map<string, dgsot::SensorValues> &SensorsIn)
 {
-  device_.cleanupSetSensors(SensorsIn);
+  device_->cleanupSetSensors(SensorsIn);
 }
 
 
@@ -100,7 +100,7 @@ getControl(map<string,dgsot::ControlValues> &controlOut)
   try 
     {
       sotDEBUG(25) << __FILE__ << __FUNCTION__ << "(#" << __LINE__ << ")" << endl;
-      device_.getControl(controlOut);
+      device_->getControl(controlOut);
       sotDEBUG(25) << __FILE__ << __FUNCTION__ << "(#" << __LINE__ << ")" << endl;
     }
   catch ( dynamicgraph::sot::ExceptionAbstract & err)
@@ -118,13 +118,13 @@ getControl(map<string,dgsot::ControlValues> &controlOut)
 void SoTTiagoController::
 setNoIntegration(void)
 {
-  device_.setNoIntegration();
+  device_->setNoIntegration();
 }
 
 void SoTTiagoController::
 setSecondOrderIntegration(void)
 {
-  device_.setSecondOrderIntegration();
+  device_->setSecondOrderIntegration();
 }
 
 void SoTTiagoController::
