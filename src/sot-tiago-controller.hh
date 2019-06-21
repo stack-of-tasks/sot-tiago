@@ -61,7 +61,7 @@ class SoTTiagoController: public
     
   void init();
 
-  SoTTiagoDevice device_;
+  SoTTiagoDevice* device_;
 };
 
 #endif /* _SOT_TiagoController_H_ */
