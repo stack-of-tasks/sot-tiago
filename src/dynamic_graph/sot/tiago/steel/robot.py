@@ -16,7 +16,6 @@
 
 
 from dynamic_graph.sot.tiago import Tiago
-import numpy as np
 
 class TiagoSteel (Tiago):
     """
