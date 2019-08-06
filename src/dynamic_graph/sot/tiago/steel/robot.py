@@ -22,19 +22,22 @@ class TiagoSteel (Tiago):
     This class instantiates LAAS TIAGO Robot
     """
 
-
-    halfSitting = (0., 0., 0., 0., 0., 0.,
-                   0., 0.,                                           # Wheels
-                   0.,                                               # Torso
-                   0.,  -1.569796, -1.569796, 2.355194, 0., 0.,  0., # Arm
-                   0.,                                               # Gripper (left, right)
-                   0.,  0.,                                          # Head
-               )
-
     def __init__(self, name,
                  device = None,
-                 tracer = None):
-        Tiago.__init__(self,name,self.halfSitting,device,tracer)
+                 tracer = None,
+                 with_wheels = True):
+        halfSitting = (0., 0., 0., 0., 0., 0.,
+                ) + ( (0., 0.,) if with_wheels else tuple()              # Wheels
+                ) + (  0.,                                               # Torso
+                       0.,  -1.569796, -1.569796, 2.355194, 0., 0.,  0., # Arm
+                       0.,                                               # Gripper (left, right)
+                       0.,  0.,                                          # Head
+                   )
+        Tiago.__init__(self,name,
+                initialConfig = halfSitting,
+                device = device,
+                tracer = tracer,
+                with_wheels = with_wheels)
         """
         TODO:Confirm these values
         # Define camera positions w.r.t gaze.
