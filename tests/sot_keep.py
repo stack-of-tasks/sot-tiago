@@ -14,7 +14,11 @@ tp.feature.state.value = q
 tp.feature.posture.value = q
 
 robotDim = robot.dynamic.getDimension()
-for i in range(8, robotDim):
+assert robotDim == len(q)
+
+with_wheels = robotDim == 19
+
+for i in range(8 if with_wheels else 6, robotDim):
     tp.feature.selectDof (i, True)
 
 tp.gain = GainAdaptive("gain_"+n)
@@ -78,8 +82,10 @@ def getJointIdxQ (name):
 from dynamic_graph.sot.tiago.diff_drive_controller import HolonomicProjection
 projection = HolonomicProjection("projection")
 projection.setSize (robot.dynamic.getDimension())
-projection.setLeftWheel (6)
-projection.setRightWheel (7)
+if with_wheels:
+    projection.setLeftWheel (6)
+    projection.setRightWheel (7)
+
 # The wheel separation could be obtained with pinocchio.
 # See pmb2_description/urdf/base.urdf.xacro
 projection.setWheelRadius (0.0985)
