@@ -10,6 +10,10 @@
  *
  */
 
+#ifndef TIAGO_STEEL_WITH_WHEELS
+# error "You must define TIAGO_STEEL_WITH_WHEELS to 0 or 1"
+#endif
+
 #include <sot/core/debug.hh>
 
 /* TiagoSteel is the instance of TIAGO named "steel" */
@@ -19,8 +23,9 @@
 
 const std::string SoTTiagoSteelController::LOG_PYTHON_TIAGOSTEEL="/tmp/TiagoSteelController_python.out";
 
-SoTTiagoSteelController::SoTTiagoSteelController():
-  SoTTiagoController(ROBOTNAME)
+SoTTiagoSteelController::SoTTiagoSteelController(bool withWheels):
+  SoTTiagoController(ROBOTNAME),
+  withWheels_ (withWheels)
 {
   startupPython();
   interpreter_->startRosService ();
@@ -30,10 +35,17 @@ void SoTTiagoSteelController::startupPython()
 {
   SoTTiagoController::startupPython();
   std::ofstream aof(LOG_PYTHON_TIAGOSTEEL.c_str());
-  runPython
-    (aof,
-     "from dynamic_graph.sot.tiago.steel.prologue import robot",
-     *interpreter_);
+  runPython (aof,
+      "import dynamic_graph.sot.tiago.steel.prologue",
+      *interpreter_);
+  if (withWheels_)
+    runPython (aof,
+        "robot = dynamic_graph.sot.tiago.steel.prologue.makeRobot (with_wheels=True)",
+        *interpreter_);
+  else
+    runPython (aof,
+        "robot = dynamic_graph.sot.tiago.steel.prologue.makeRobot (with_wheels=False)",
+        *interpreter_);
   aof.close();
 }
 
@@ -41,7 +53,11 @@ extern "C"
 {
   dgsot::AbstractSotExternalInterface * createSotExternalInterface()
   {
-    return new SoTTiagoSteelController;
+#if TIAGO_STEEL_WITH_WHEELS
+    return new SoTTiagoSteelController (true );
+#else
+    return new SoTTiagoSteelController (false);
+#endif
   }
 }
 

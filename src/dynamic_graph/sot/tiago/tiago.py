@@ -59,7 +59,7 @@ class Tiago(AbstractRobot):
         res = config[0:27] + 7*(0.,) + config[27:34]+ 7*(0.,)+config[34:]
         return res
 
-    def __init__(self, name, initialConfig, device = None, tracer = None):
+    def __init__(self, name, initialConfig, device = None, tracer = None, with_wheels = True):
         self.OperationalPointsMap = {'wrist'       : 'arm_7_joint',
                                      'right-wheel' : 'wheel_right_joint',
                                      'left-wheel'  : 'wheel_left_joint',
@@ -70,7 +70,10 @@ class Tiago(AbstractRobot):
 
         from rospkg import RosPack
         rospack = RosPack()
-        self.urdfFile = rospack.get_path('tiago_data')+"/robots/tiago_steel.urdf"
+        if with_wheels:
+            self.urdfFile = rospack.get_path('tiago_data')+"/robots/tiago_steel.urdf"
+        else:
+            self.urdfFile = rospack.get_path('tiago_data')+"/robots/tiago_steel_without_wheels.urdf"
         self.urdfDir = [rospack.get_path('tiago_data')+"/../"]
 
         # Create a wrapper to access the dynamic model provided through an urdf file.

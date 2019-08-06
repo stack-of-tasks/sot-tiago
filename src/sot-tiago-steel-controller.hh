@@ -22,7 +22,7 @@ class SoTTiagoSteelController: public SoTTiagoController
  public:
   static const std::string LOG_PYTHON_TIAGOSTEEL;
 
-  SoTTiagoSteelController();
+  SoTTiagoSteelController(bool withWheels);
   virtual ~SoTTiagoSteelController() {};
 
 
@@ -30,6 +30,7 @@ class SoTTiagoSteelController: public SoTTiagoController
 
   virtual void startupPython();
   
+  bool withWheels_;
 
 };
 

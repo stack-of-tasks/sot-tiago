@@ -23,12 +23,14 @@ from dynamic_graph.sot.tiago.steel.robot import TiagoSteel as Robot
 # 1. it does not provide the increment command
 # 2. it forwards the robot control to the sot-abstract
 #    controller.
-DeviceTiago = PyEntityFactoryClass('DeviceTiago')
+def makeRobot (with_wheels = True):
+    DeviceTiago = PyEntityFactoryClass('DeviceTiago')
 
-# Create the robot using the device.
-robot = Robot(name = 'robot', device = DeviceTiago('TIAGOSTEEL'))
+    # Create the robot using the device.
+    robot = Robot(name = 'robot', device = DeviceTiago('TIAGOSTEEL'),
+            with_wheels = with_wheels)
 
-__all__ = ["robot"]
+    return robot
 
 ####################################
 #        --- IMPORTANT ---         #
