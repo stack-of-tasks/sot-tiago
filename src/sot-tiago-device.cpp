@@ -145,7 +145,7 @@ void SoTTiagoDevice::setSensors(map<string,dgsot::SensorValues> &SensorsIn)
     // Implements force recollection.
     const vector<double>& forcesIn = it->second.getValues();
     assert (std::div(forcesIn.size(), 6).rem == 0);
-    int K = forcesIn.size() / 6;
+    int K = (int)forcesIn.size() / 6;
     for(int i=0;i<K;++i)
     {
       for(int j=0;j<6;++j)
@@ -265,6 +265,8 @@ void SoTTiagoDevice::setSensors(map<string,dgsot::SensorValues> &SensorsIn)
 void SoTTiagoDevice::setupSetSensors(map<string,dgsot::SensorValues> &SensorsIn)
 {
   setSensors (SensorsIn);
+
+  setState (robotState_);
 }
 
 void SoTTiagoDevice::nominalSetSensors(map<string,dgsot::SensorValues> &SensorsIn)
