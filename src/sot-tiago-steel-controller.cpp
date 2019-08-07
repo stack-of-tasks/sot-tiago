@@ -27,6 +27,12 @@ SoTTiagoSteelController::SoTTiagoSteelController(bool withWheels):
   SoTTiagoController(ROBOTNAME),
   withWheels_ (withWheels)
 {
+  if (withWheels_) {
+    // Control wheels in velocity.
+    // 6 and 7 correspond to left and right wheel joints.
+    device_->setLeftWheelIndex (6);
+    device_->setLeftWheelIndex (7);
+  }
   startupPython();
   interpreter_->startRosService ();
 }

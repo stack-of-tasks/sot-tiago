@@ -92,7 +92,9 @@ SoTTiagoDevice::SoTTiagoDevice(std::string RobotName):
   pose (),
   accelerometer_ (3),
   gyrometer_ (3),
-  torques_()
+  torques_(),
+  leftWheelIdx_ (-1),
+  rightWheelIdx_ (-1)
 {
   RESETDEBUG5();
   timestep_ = TIMESTEP_DEFAULT;
@@ -308,10 +310,13 @@ void SoTTiagoDevice::getControl(map<string,dgsot::ControlValues> &controlOut)
 
   for(unsigned int i=6; i < state_.size();++i)
     anglesOut[i-6] = state_(i);
-  // Control wheels in velocity.
-  // 6 and 7 correspond to left and right wheel joints.
-  anglesOut[0] = vel_control_(6);
-  anglesOut[1] = vel_control_(7);
+  bool hasWheels = (leftWheelIdx_ >= 0 && rightWheelIdx_ >= 0);
+  if (hasWheels) {
+    // Control wheels in velocity.
+    // 6 and 7 correspond to left and right wheel joints.
+    anglesOut[0] = vel_control_(leftWheelIdx_);
+    anglesOut[1] = vel_control_(rightWheelIdx_);
+  }
   controlOut["control"].setValues(anglesOut);
   // Read zmp reference from input signal if plugged
   if (zmpSIN.isPlugged()) {
