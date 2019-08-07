@@ -56,6 +56,10 @@ dgsot::Device
 
   void getControl(std::map<std::string, dgsot::ControlValues> &anglesOut);
 
+  void setLeftWheelIndex (int idx);
+
+  void setRightWheelIndex (int idx);
+
 protected:
 
   void setClosedLoop (const bool& closedLoop)
@@ -95,5 +99,7 @@ protected:
   dg::Vector currents_;
   dg::Vector p_gains_;
   dg::Vector d_gains_;
+
+  int leftWheelIdx_, rightWheelIdx_;
 };
 #endif /* _SOT_TiagoDevice_H_*/
