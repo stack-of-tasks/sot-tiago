@@ -14,6 +14,7 @@
 # error "You must define TIAGO_STEEL_WITH_WHEELS to 0 or 1"
 #endif
 
+#include <pinocchio/fwd.hpp>
 #include <sot/core/debug.hh>
 
 /* TiagoSteel is the instance of TIAGO named "steel" */
