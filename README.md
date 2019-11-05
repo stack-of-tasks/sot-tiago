@@ -1,6 +1,10 @@
 sot_tiago
 ===========
 
+[![Pipeline status](https://gepgitlab.laas.fr/stack-of-tasks/sot-tiago/badges/master/pipeline.svg)](https://gepgitlab.laas.fr/stack-of-tasks/sot-tiago/commits/master)
+[![Coverage report](https://gepgitlab.laas.fr/stack-of-tasks/sot-tiago/badges/master/coverage.svg?job=doc-coverage)](http://projects.laas.fr/gepetto/doc/stack-of-tasks/sot-tiago/master/coverage/)
+
+
 This packages provides a generic Stack Of Tasks library
 for the robot Tiago. This library is highly
 portable and can be used in various simulators, and
@@ -23,4 +27,4 @@ be deleted to reconfigure a package from scratch.
 To use:
 =======
 To embed this library an example is provided in:
-sot/core/tools/test_abstract_interface.cpp 
+sot/core/tools/test_abstract_interface.cpp
