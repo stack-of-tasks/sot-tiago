@@ -13,18 +13,18 @@
 # received a copy of the GNU Lesser General Public License along with
 # sot-tiago. If not, see <http://www.gnu.org/licenses/>.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+SET(PROJECT_NAMESPACE stack-of-tasks)
+SET(PROJECT_NAME sot-tiago)
+SET(PROJECT_DESCRIPTION "dynamic-graph package for Tiago robot")
+SET(PROJECT_URL "http://github.com/${PROJECT_NAMESPACE}/${PROJECT_NAME}")
 
 INCLUDE(cmake/base.cmake)
 INCLUDE(cmake/boost.cmake)
 INCLUDE(cmake/eigen.cmake)
 INCLUDE(cmake/lapack.cmake)
-INCLUDE(cmake/cpack.cmake)
 INCLUDE(cmake/ros.cmake)
-
-SET(PROJECT_NAME sot-tiago)
-SET(PROJECT_DESCRIPTION "dynamic-graph package for Tiago robot")
-SET(PROJECT_URL "http://github.com/stack-of-tasks/sot-tiago")
 
 SET(CUSTOM_HEADER_DIR "${PROJECT_NAME}")
 
@@ -36,7 +36,8 @@ SET(PKG_CONFIG_ADDITIONAL_VARIABLES
   plugindir
   )
 
-SETUP_PROJECT()
+CMAKE_POLICY(SET CMP0048 OLD)
+PROJECT(${PROJECT_NAME} CXX)
 
 # Search for dependencies.
 
@@ -78,6 +79,3 @@ IF(TIAGO_DATA_FOUND)
     )
 
 ENDIF(TIAGO_DATA_FOUND)
-
-SETUP_PROJECT_FINALIZE()
-SETUP_PROJECT_CPACK()
