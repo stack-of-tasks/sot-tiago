@@ -25,6 +25,7 @@ INCLUDE(cmake/boost.cmake)
 INCLUDE(cmake/eigen.cmake)
 INCLUDE(cmake/lapack.cmake)
 INCLUDE(cmake/ros.cmake)
+INCLUDE(cmake/python.cmake)
 
 SET(CUSTOM_HEADER_DIR "${PROJECT_NAME}")
 
@@ -57,6 +58,9 @@ ADD_OPTIONAL_DEPENDENCY("tiago_data")
 SET(BOOST_COMPONENTS filesystem system thread)
 SEARCH_FOR_BOOST()
 SEARCH_FOR_EIGEN()
+
+FINDPYTHON()
+INCLUDE_DIRECTORIES(SYSTEM ${PYTHON_INCLUDE_PATH})
 
 # Handle rpath necessary to handle ROS multiplace packages
 # libraries inclusion

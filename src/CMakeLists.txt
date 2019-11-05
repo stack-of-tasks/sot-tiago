@@ -13,10 +13,6 @@
 # received a copy of the GNU Lesser General Public License along with
 # sot-tiago. If not, see <http://www.gnu.org/licenses/>.
 
-INCLUDE(../cmake/python.cmake)
-FINDPYTHON()
-INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
-
 FUNCTION(COMPILE_PLUGIN NAME)
   ADD_LIBRARY(${NAME} SHARED ${SOURCES})
   SET_TARGET_PROPERTIES(${lib} PROPERTIES
@@ -39,13 +35,13 @@ FUNCTION(COMPILE_PLUGIN NAME)
 ENDFUNCTION()
 
 SET(ENTITIES DiffDriveController HolonomicProjection)
-SET(SOURCES 
+SET(SOURCES
   diff_drive_controller.cpp
   speed_limiter.cpp
   odometry.cpp
   holonomic-projection.cc)
 COMPILE_PLUGIN(diff-drive-controller)
-TARGET_INCLUDE_DIRECTORIES(diff-drive-controller 
+TARGET_INCLUDE_DIRECTORIES(diff-drive-controller
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Install Python files.
@@ -128,7 +124,7 @@ MACRO(build_tiago_controller CONTROLLER_NAME WITH_WHEELS)
   TARGET_LINK_LIBRARIES(${CONTROLLER_NAME} "sot-tiago-device")
   TARGET_LINK_LIBRARIES(${CONTROLLER_NAME} "ros_bridge")
   TARGET_LINK_LIBRARIES(${CONTROLLER_NAME} "ros_interpreter")
- 
+
   IF(UNIX AND NOT APPLE)
     TARGET_LINK_LIBRARIES(${CONTROLLER_NAME} ${Boost_LIBRARIES})
   ENDIF(UNIX AND NOT APPLE)
@@ -139,4 +135,3 @@ ENDMACRO()
 
 build_tiago_controller(sot-tiago-steel-controller TRUE)
 build_tiago_controller(sot-tiago-steel-without-wheels-controller FALSE)
-
