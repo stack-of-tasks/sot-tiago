@@ -85,20 +85,13 @@ ENDMACRO()
 build_tiago_device()
 
 # Add the library to wrap the controller of Tiago.
-MACRO(build_tiago_controller CONTROLLER_NAME WITH_WHEELS)
+MACRO(build_tiago_controller CONTROLLER_NAME)
 
   ADD_LIBRARY(${CONTROLLER_NAME}
     SHARED
     sot-tiago-controller.cpp
     sot-tiago-steel-controller.cpp
   )
-  IF(WITH_WHEELS)
-    TARGET_COMPILE_DEFINITIONS(${CONTROLLER_NAME}
-      PRIVATE TIAGO_STEEL_WITH_WHEELS=1)
-  ELSE(WITH_WHEELS)
-    TARGET_COMPILE_DEFINITIONS(${CONTROLLER_NAME}
-      PRIVATE TIAGO_STEEL_WITH_WHEELS=0)
-  ENDIF(WITH_WHEELS)
 
   # Link the dynamic library containing the SoT with its dependencies.
   PKG_CONFIG_USE_DEPENDENCY(${CONTROLLER_NAME} "dynamic-graph")
@@ -121,4 +114,3 @@ MACRO(build_tiago_controller CONTROLLER_NAME WITH_WHEELS)
 ENDMACRO()
 
 build_tiago_controller(sot-tiago-steel-controller TRUE)
-build_tiago_controller(sot-tiago-steel-without-wheels-controller FALSE)

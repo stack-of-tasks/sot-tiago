@@ -10,10 +10,6 @@
  *
  */
 
-#ifndef TIAGO_STEEL_WITH_WHEELS
-# error "You must define TIAGO_STEEL_WITH_WHEELS to 0 or 1"
-#endif
-
 #include <pinocchio/fwd.hpp>
 #include <sot/core/debug.hh>
 
@@ -24,10 +20,14 @@
 
 const std::string SoTTiagoSteelController::LOG_PYTHON_TIAGOSTEEL="/tmp/TiagoSteelController_python.out";
 
-SoTTiagoSteelController::SoTTiagoSteelController(bool withWheels):
+SoTTiagoSteelController::SoTTiagoSteelController():
   SoTTiagoController(ROBOTNAME),
-  withWheels_ (withWheels)
+  withWheels_ (false)
 {
+  ros::NodeHandle nh;
+  nh.getParam("/sot_controller/use_mobile_base", withWheels_);
+  ROS_INFO_STREAM("Loading SoT Tiago steel controller with"
+      << (withWheels_ ? "" : "out") <<  "wheel");
   if (withWheels_) {
     // Control wheels in velocity.
     // 6 and 7 correspond to left and right wheel joints.
@@ -60,11 +60,7 @@ extern "C"
 {
   dgsot::AbstractSotExternalInterface * createSotExternalInterface()
   {
-#if TIAGO_STEEL_WITH_WHEELS
-    return new SoTTiagoSteelController (true );
-#else
-    return new SoTTiagoSteelController (false);
-#endif
+    return new SoTTiagoSteelController ();
   }
 }
 
