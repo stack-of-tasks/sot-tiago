@@ -42,17 +42,12 @@ try:
 
     rospy.loginfo("Stack of Tasks launched")
 
-    # runCommandClient("from dynamic_graph import plug")
-    # runCommandClient("from dynamic_graph.sot.core import SOT")
-    # runCommandClient("sot = SOT('sot')")
-    # runCommandClient("sot.setSize(robot.dynamic.getDimension())")
-    # runCommandClient("plug(sot.control,robot.device.control)")
 
     launchScript(initCode, 'initialize SoT')
-    input("Wait before starting the dynamic graph")
+    input("Wait before starting the dynamic graph and go to first position")
     runCommandStartDynamicGraph()
-    input("Wait before moving the hand")
-    runCommandClient("target = (0.5,-0.2,1.0)")
+    input("Wait before moving the hand to the next position")
+    runCommandClient("target = (0.25,0.2,0.6)")
     runCommandClient("gotoNd(taskRH,target,'111',(4.9,0.9,0.01,0.9))")
     runCommandClient("sot.push(taskRH.task.name)")
 
