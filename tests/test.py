@@ -47,9 +47,7 @@ try:
     input("Wait before starting the dynamic graph and go to first position")
     runCommandStartDynamicGraph()
     input("Wait before moving the hand to the next position")
-    runCommandClient("target = (0.25,0.2,0.6)")
-    runCommandClient("gotoNd(taskRH,target,'111',(4.9,0.9,0.01,0.9))")
-    runCommandClient("sot.push(taskRH.task.name)")
+    runCommandClient("plug(sot.control, robot.device.control)")
 
 except rospy.ServiceException as e:
     rospy.logerr("Service call failed: %s" % e)
