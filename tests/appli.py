@@ -15,7 +15,7 @@ handMgrip[0:3, 3] = (0.1, 0, 0)
 taskRH.opmodif = matrixToTuple(handMgrip)
 # taskRH.feature.frame('desired')
 
-taskElbow.opmodif = matrixToTuple(handMgrip)
+# taskElbow.opmodif = matrixToTuple(handMgrip)
 # taskElbow.feature.frame('desired')
 # taskCom = MetaTaskKineCom(robot.dynamic)
 # robot.dynamic.com.recompute(0)
@@ -38,7 +38,7 @@ sot.setSize(robot.dynamic.getDimension())
 
 plug(projection.projection, sot.proj0)
 
-plug(sot.control, robot.device.control)
+robot.device.control.value = (0,) * robot.dynamic.getDimension()
 
 ros_publish_state = RosPublish("ros_publish_state")
 ros_publish_state.add("vector", "state", "/sot_control/state")
