@@ -6,7 +6,7 @@
  * LAAS, CNRS
  *
  * This file is part of TiagoController.
- * TiagoController is not a free software, 
+ * TiagoController is not a free software,
  * it contains information related to Tiago which involves
  * that you either purchased the proper license to havec access to
  * those informations, or that you signed the appropriate
@@ -30,7 +30,7 @@
 namespace dgsot=dynamicgraph::sot;
 namespace dg=dynamicgraph;
 
-class SoTTiagoDevice: public 
+class SoTTiagoDevice: public
 dgsot::Device
 {
  public:
@@ -38,14 +38,14 @@ dgsot::Device
   static const std::string CLASS_NAME;
   static const double TIMESTEP_DEFAULT;
 
-  virtual const std::string& getClassName () const		
-  {  
-    return CLASS_NAME;							    
+  virtual const std::string& getClassName () const
+  {
+    return CLASS_NAME;
   }
-  
+
   SoTTiagoDevice(std::string RobotName);
   virtual ~SoTTiagoDevice();
-  
+
   void setSensors(std::map<std::string,dgsot::SensorValues> &sensorsIn);
 
   void setupSetSensors(std::map<std::string,dgsot::SensorValues> &sensorsIn);
@@ -59,7 +59,13 @@ dgsot::Device
   void setLeftWheelIndex (int idx);
 
   void setRightWheelIndex (int idx);
+  /// TODO this should go into the parent class, in sot-core package
+  void setTimeStep (double dt)
+  {
+    timestep_ = dt;
+  }
 
+  //
 protected:
 
   void setClosedLoop (const bool& closedLoop)
@@ -70,11 +76,11 @@ protected:
   /// \brief Whether the control of the base should be expressed in odometry
   ///        frame of base frame.
   bool closedLoop_;
-  
+
   /// \brief Previous robot configuration.
   dg::Vector previousState_;
-  
-  /// Intermediate variables to avoid allocation during control
+
+  /// Intermediate v••••••••ariables to avoid allocation during control
   std::vector<double> baseff_;
 
   /// Accelerations measured by accelerometers
@@ -84,7 +90,7 @@ protected:
   /// motor currents
   dynamicgraph::Signal <dg::Vector, int> currentSOUT_;
 
-  /// proportional and derivative position-control gains
+  /// proportional a••••••••nd derivative position-control gains
   dynamicgraph::Signal <dg::Vector, int> p_gainsSOUT_;
 
   dynamicgraph::Signal <dg::Vector, int> d_gainsSOUT_;

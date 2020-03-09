@@ -130,6 +130,16 @@ SoTTiagoDevice::SoTTiagoDevice(std::string RobotName):
   sotDEBUGOUT(25);
 }
 
+void SoTTiagoDevice::setLeftWheelIndex(int idx)
+{
+  leftWheelIdx_ = idx;
+}
+
+void SoTTiagoDevice::setRightWheelIndex(int idx)
+{
+  rightWheelIdx_ = idx;
+}
+
 SoTTiagoDevice::~SoTTiagoDevice()
 { }
 
