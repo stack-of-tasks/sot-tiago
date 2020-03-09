@@ -60,6 +60,12 @@ dgsot::Device
 
   void setRightWheelIndex (int idx);
 
+  /// \todo this should go into the parent class, in sot-core package
+  void setTimeStep (double dt)
+  {
+    timestep_ = dt;
+  }
+
 protected:
 
   void setClosedLoop (const bool& closedLoop)
