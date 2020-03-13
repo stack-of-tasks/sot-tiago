@@ -6,7 +6,7 @@ from __future__ import print_function
 import pinocchio as se3
 from dynamic_graph import plug
 from dynamic_graph.sot.core.math_small_entities import Derivator_of_Vector
-from dynamic_graph.sot.dynamics_pinocchio import DynamicPinocchio
+from dynamic_graph.sot.dynamic_pinocchio import DynamicPinocchio
 from dynamic_graph.sot.tiago.robot import AbstractRobot
 from pinocchio.robot_wrapper import RobotWrapper
 
