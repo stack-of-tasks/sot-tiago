@@ -22,7 +22,7 @@ class SoTTiagoSteelController: public SoTTiagoController
  public:
   static const std::string LOG_PYTHON_TIAGOSTEEL;
 
-  SoTTiagoSteelController(bool withWheels);
+  SoTTiagoSteelController();
   virtual ~SoTTiagoSteelController() {};
 
 
