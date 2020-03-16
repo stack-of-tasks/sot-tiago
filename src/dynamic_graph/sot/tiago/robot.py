@@ -344,12 +344,12 @@ class Robot(AbstractRobot):
         # TODO For position limit, we remove the first value to get
         # a vector of the good size because SoT use euler angles and not
         # quaternions...
-        self.device.setPositionBounds(pinocchio_model.lowerPositionLimit.T.tolist()[0][1:],
-                                      pinocchio_model.upperPositionLimit.T.tolist()[0][1:])
-        self.device.setVelocityBounds((-pinocchio_model.velocityLimit).T.tolist()[0],
-                                      pinocchio_model.velocityLimit.T.tolist()[0])
-        self.device.setTorqueBounds((-pinocchio_model.effortLimit).T.tolist()[0],
-                                    pinocchio_model.effortLimit.T.tolist()[0])
+        self.device.setPositionBounds(pinocchio_model.lowerPositionLimit.tolist()[1:],
+                                      pinocchio_model.upperPositionLimit.tolist()[1:])
+        self.device.setVelocityBounds((-pinocchio_model.velocityLimit).tolist(),
+                                      pinocchio_model.velocityLimit.tolist())
+        self.device.setTorqueBounds((-pinocchio_model.effortLimit).tolist(),
+                                    pinocchio_model.effortLimit.tolist())
 
         if self.enableVelocityDerivator:
             self.velocityDerivator = Derivator_of_Vector('velocityDerivator')
