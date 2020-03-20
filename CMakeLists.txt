@@ -7,6 +7,10 @@ SET(PROJECT_NAME sot-tiago)
 SET(PROJECT_DESCRIPTION "dynamic-graph package for Tiago robot")
 SET(PROJECT_URL "http://github.com/${PROJECT_NAMESPACE}/${PROJECT_NAME}")
 
+OPTION(SUFFIX_SO_VERSION
+  "Suffix shared library name by a string depending on git status of project"
+  ON)
+
 INCLUDE(cmake/base.cmake)
 INCLUDE(cmake/boost.cmake)
 INCLUDE(cmake/eigen.cmake)

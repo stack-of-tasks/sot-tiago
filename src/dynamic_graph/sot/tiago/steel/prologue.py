@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018, Joseph Mirabel,
-
 from dynamic_graph.entity import PyEntityFactoryClass
 from dynamic_graph.sot.tiago.steel.robot import TiagoSteel as Robot
 
