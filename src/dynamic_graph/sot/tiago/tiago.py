@@ -10,20 +10,11 @@ from dynamic_graph.sot.dynamic_pinocchio import DynamicPinocchio
 from dynamic_graph.sot.tiago.robot import AbstractRobot
 from pinocchio.robot_wrapper import RobotWrapper
 
-
-# Internal helper tool.
-def matrixToTuple(M):
-    tmp = M.tolist()
-    res = []
-    for i in tmp:
-        res.append(tuple(i))
-    return tuple(res)
-
-
 class Tiago(AbstractRobot):
     """
     This class defines a Tiago robot
     """
+    defaultFilename = "package://tiago_data/robots/tiago_steel.urdf"
     """
     TODO: Confirm the position and existence of these sensors
     accelerometerPosition = np.matrix ((
@@ -57,17 +48,43 @@ class Tiago(AbstractRobot):
             'gaze': 'head_2_joint',
         }
 
-        from rospkg import RosPack
-        rospack = RosPack()
-        if with_wheels:
-            self.urdfFile = rospack.get_path('tiago_data') + "/robots/tiago_steel.urdf"
-        else:
-            self.urdfFile = rospack.get_path('tiago_data') + "/robots/tiago_steel_without_wheels.urdf"
-        self.urdfDir = [rospack.get_path('tiago_data') + "/../"]
+        if fromRosParam:
+            print("Using ROS parameter \"/robot_description\"")
+            rosParamName = "/robot_description"
+            import rospy
+            if rosParamName not in rospy.get_param_names():
+                raise RuntimeError('"' + rosParamName + '" is not a ROS parameter.')
+            s = rospy.get_param(rosParamName)
 
-        # Create a wrapper to access the dynamic model provided through an urdf file.
-        pinocchioRobot = RobotWrapper()
-        pinocchioRobot.initFromURDF(self.urdfFile, self.urdfDir, se3.JointModelFreeFlyer())
+            self.loadModelFromString(s, rootJointType=pinocchio.JointModelFreeFlyer,
+                    removeMimicJoints=True)
+        else:
+            self.loadModelFromUrdf(self.defaultFilename,
+                    rootJointType=pinocchio.JointModelFreeFlyer,
+                    removeMimicJoints=True)
+
+        # Clean the robot model. Remove:
+        # - caster joints
+        # - suspension joints
+        # - for hey5 hands, remove every hand_* joints except hand_thumb_joint,
+        #   hand_index_joint and hand_mrl_joint (mrl = middle, ring, little)
+        jointsToRemove = []
+        for name in enumerate(self.pinocchioModel.names):
+            if not with_wheels and name.startswith("wheel_"):
+                jointsToRemove.append(name)
+            elif name.startswith('caster'):
+                jointsToRemove.append(name)
+            elif name.startswith('suspension'):
+                jointsToRemove.append(name)
+            elif name.startswith('hand_') and \
+                    name not in ("hand_thumb_joint", "hand_index_joint", "hand_mrl_joint"):
+                jointsToRemove.append(name)
+
+        print("Removing joints " + ", ".join(jointsToRemove))
+        self.removeJoints(jointsToRemove)
+
+        assert hasattr(self, "pinocchioModel")
+        assert hasattr(self, "pinocchioData")
 
         self.pinocchioModel = pinocchioRobot.model
         self.pinocchioData = pinocchioRobot.data
