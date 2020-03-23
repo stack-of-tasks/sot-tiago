@@ -41,8 +41,6 @@ SET(PYTHON_MODULE_BUILD_DIR
 SET(PYTHON_MODULE dynamic_graph/sot/tiago)
 PYTHON_INSTALL_ON_SITE("${PYTHON_MODULE}" "__init__.py" )
 PYTHON_INSTALL_ON_SITE("${PYTHON_MODULE}" "tiago.py" )
-PYTHON_INSTALL_ON_SITE("${PYTHON_MODULE}" "robot.py" )
-SET(FILES __init__.py robot.py)
 
 # Install dynamic_graph.sot.tiago.steel
 SET(PYTHON_MODULE dynamic_graph/sot/tiago/steel)

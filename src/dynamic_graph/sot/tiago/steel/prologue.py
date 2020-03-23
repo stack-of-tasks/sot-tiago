@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018, Joseph Mirabel,
+
+# sys.argv is not defined when running the remove interpreter, but it is
+# required by rospy
+import sys
+
 from dynamic_graph.entity import PyEntityFactoryClass
 from dynamic_graph.sot.tiago.steel.robot import TiagoSteel as Robot
+
+if not hasattr(sys, 'argv'):
+    sys.argv = [
+        "dynamic_graph",
+    ]
 
 print("Prologue TIAGO Steel Robot")
 
@@ -15,7 +25,7 @@ def makeRobot(with_wheels=True):
     DeviceTiago = PyEntityFactoryClass('DeviceTiago')
 
     # Create the robot using the device.
-    robot = Robot(name='robot', device=DeviceTiago('TIAGOSTEEL'), with_wheels=with_wheels)
+    robot = Robot(name='robot', device=DeviceTiago('TIAGOSTEEL'), with_wheels=with_wheels, fromRosParam=True)
 
     return robot
 
