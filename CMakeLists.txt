@@ -1,16 +1,22 @@
-# Copyright 2016, Thomas Moulard, Olivier Stasse, JRL, CNRS/AIST
+# Copyright 2016, 2020, Thomas Moulard, Olivier Stasse, Guilhem Saurel, JRL, CNRS/AIST, LAAS-CNRS
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
-SET(PROJECT_NAMESPACE stack-of-tasks)
+# Project properties
+SET(PROJECT_ORG stack-of-tasks)
 SET(PROJECT_NAME sot-tiago)
 SET(PROJECT_DESCRIPTION "dynamic-graph package for Tiago robot")
-SET(PROJECT_URL "http://github.com/${PROJECT_NAMESPACE}/${PROJECT_NAME}")
+SET(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
 
-OPTION(SUFFIX_SO_VERSION
-  "Suffix shared library name by a string depending on git status of project"
-  ON)
+# Project options
+OPTION(SUFFIX_SO_VERSION "Suffix library name with its version" ON)
 
+# Project configuration
+SET(PROJECT_USE_CMAKE_EXPORT TRUE)
+SET(CUSTOM_HEADER_DIR "${PROJECT_NAME}")
+SET(CXX_DISABLE_WERROR TRUE)
+
+# JRL-cmakemodule setup
 INCLUDE(cmake/base.cmake)
 INCLUDE(cmake/boost.cmake)
 INCLUDE(cmake/eigen.cmake)
@@ -18,59 +24,33 @@ INCLUDE(cmake/lapack.cmake)
 INCLUDE(cmake/ros.cmake)
 INCLUDE(cmake/python.cmake)
 
-SET(CUSTOM_HEADER_DIR "${PROJECT_NAME}")
+# Project definition
+COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
+PROJECT(${PROJECT_NAME} ${PROJECT_ARGS})
 
-SET(CXX_DISABLE_WERROR True)
-
-SET(PKG_CONFIG_ADDITIONAL_VARIABLES
-  ${PKG_CONFIG_ADDITIONAL_VARIABLES}
-  plugindirname
-  plugindir
-  )
-
-CMAKE_POLICY(SET CMP0048 OLD)
-PROJECT(${PROJECT_NAME} CXX)
-
-# Search for dependencies.
-
-ADD_REQUIRED_DEPENDENCY("pinocchio")
-
-ADD_REQUIRED_DEPENDENCY("dynamic-graph >= 3.0.0")
-ADD_REQUIRED_DEPENDENCY("sot-core >= 3.0.0")
-ADD_REQUIRED_DEPENDENCY("sot-dynamic-pinocchio >= 3.1")
-ADD_REQUIRED_DEPENDENCY("dynamic-graph-python >= 3.0.0")
-
-ADD_REQUIRED_DEPENDENCY("dynamic_graph_bridge_msgs")
-ADD_REQUIRED_DEPENDENCY("dynamic_graph_bridge >= 3.0")
-
-ADD_OPTIONAL_DEPENDENCY("tiago_data")
-# Search for dependencies.
-# Boost
+# Project dependencies
 SET(BOOST_COMPONENTS filesystem system thread)
-SEARCH_FOR_BOOST()
-SEARCH_FOR_EIGEN()
+
+ADD_PROJECT_DEPENDENCY(sot-dynamic-pinocchio REQUIRED PKG_CONFIG_REQUIRES sot-dynamic-pinocchio)
+ADD_PROJECT_DEPENDENCY(dynamic-graph-python REQUIRED PKG_CONFIG_REQUIRES dynamic-graph-python)
+ADD_PROJECT_DEPENDENCY(dynamic_graph_bridge REQUIRED PKG_CONFIG_REQUIRES dynamic_graph_bridge)
+ADD_PROJECT_DEPENDENCY(tiago_data)
+ADD_REQUIRED_DEPENDENCY(dynamic_graph_bridge_msgs)
 
 FINDPYTHON()
-INCLUDE_DIRECTORIES(SYSTEM ${PYTHON_INCLUDE_PATH})
+SEARCH_FOR_BOOST()
 
-# Handle rpath necessary to handle ROS multiplace packages
-# libraries inclusion
-SET(CMAKE_INSTALL_LIBDIR lib)
-SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+# Main Library
+ADD_LIBRARY(${PROJECT_NAME} INTERFACE)
+INSTALL(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
 
 # Add subdirectories.
 ADD_SUBDIRECTORY(src)
 
-IF(TIAGO_DATA_FOUND)
+IF(tiago_data_FOUND)
   INSTALL(FILES
-    ${PROJECT_SOURCE_DIR}/tests/test.py
-    ${PROJECT_SOURCE_DIR}/tests/appli.py
-    ${PROJECT_SOURCE_DIR}/tests/stop-controllers.py
-    DESTINATION
-    ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/tests
-    )
-
-ENDIF(TIAGO_DATA_FOUND)
+    tests/test.py
+    tests/appli.py
+    tests/stop-controllers.py
+    DESTINATION share/${PROJECT_NAME}/tests)
+ENDIF(tiago_data_FOUND)
