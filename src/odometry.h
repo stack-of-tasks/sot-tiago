@@ -42,6 +42,8 @@
 #ifndef ODOMETRY_H_
 #define ODOMETRY_H_
 
+#include "pinocchio/fwd.hpp"
+
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/rolling_mean.hpp>
