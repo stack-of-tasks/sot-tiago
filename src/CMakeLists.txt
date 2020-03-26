@@ -61,7 +61,7 @@ ADD_LIBRARY(${CONTROLLER_NAME} SHARED
 
 # Link the dynamic library containing the SoT with its dependencies.
 TARGET_LINK_LIBRARIES(${CONTROLLER_NAME} sot-core::sot-core dynamic-graph-python::dynamic-graph-python
-    sot-tiago-device "ros_bridge" "ros_interpreter")
+    dynamic_graph_bridge::ros_bridge dynamic_graph_bridge::ros_interpreter sot-tiago-device)
 
 IF(UNIX AND NOT APPLE)
   TARGET_LINK_LIBRARIES(${CONTROLLER_NAME} ${Boost_LIBRARIES})
