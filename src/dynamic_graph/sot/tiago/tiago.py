@@ -29,7 +29,7 @@ class Tiago(AbstractRobot):
                 [ "arm_{}_joint".format(i+1) for i in range(7) ],
                 (0., -1.569796, -1.569796, 2.355194, 0., 0., 0.,))
 
-    def __init__(self, name, device=None, tracer=None, with_wheels=True, fromRosParam=False):
+    def __init__(self, robotName, device=None, tracer=None, with_wheels=True, fromRosParam=False):
         self.OperationalPointsMap = {
             'wrist': 'arm_7_joint',
             'right-wheel': 'wheel_right_joint',
@@ -77,7 +77,7 @@ class Tiago(AbstractRobot):
         assert hasattr(self, "pinocchioModel")
         assert hasattr(self, "pinocchioData")
 
-        AbstractRobot.__init__(self, name, tracer)
+        AbstractRobot.__init__(self, robotName, tracer)
 
         # Create rigid body dynamics model and data (pinocchio)
         self.dynamic = DynamicPinocchio(self.name + "_dynamic")
@@ -86,6 +86,7 @@ class Tiago(AbstractRobot):
         self.dynamic.displayModel()
         self.dimension = self.dynamic.getDimension()
 
+        self.device = device
         self.initializeRobot()
 
         # Create operational points based on operational points map (if provided)
