@@ -25,7 +25,7 @@ def makeRobot(with_wheels=True):
     DeviceTiago = PyEntityFactoryClass('DeviceTiago')
 
     # Create the robot using the device.
-    robot = Robot(name='robot', device=DeviceTiago('TIAGOSTEEL'), with_wheels=with_wheels, fromRosParam=True)
+    robot = Robot(name='tiago', device=DeviceTiago('TIAGOSTEEL'), with_wheels=with_wheels, fromRosParam=True)
 
     return robot
 
