@@ -54,3 +54,5 @@ IF(tiago_data_FOUND)
     tests/stop-controllers.py
     DESTINATION share/${PROJECT_NAME}/tests)
 ENDIF(tiago_data_FOUND)
+
+INSTALL(FILES package.xml DESTINATION share/${PROJECT_NAME})

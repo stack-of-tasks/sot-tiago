@@ -1,0 +1,32 @@
+<package format="2">
+  <name>sot-tiago</name>
+  <version>1.4.1</version>
+  <description>
+    Stack of Tasks for Tiago.
+  </description>
+  <maintainer email="guilhem.saurel@laas.fr">Guilhem Saurel</maintainer>
+  <license>BSD</license>
+
+  <url>http://github.com/stack-of-tasks/sot-tiago</url>
+  <author>Olivier Stasse</author>
+  <author>Joseph Mirabel</author>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>sot-dynamic-pinocchio</build_depend>
+  <build_depend>tiago_data</build_depend>
+  <build_depend>pyrene-motions</build_depend>
+  <build_depend>dynamic_graph_bridge</build_depend>
+  <build_depend>dynamic_graph_bridge_msgs</build_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>sot-dynamic-pinocchio</exec_depend>
+  <exec_depend>tiago_data</exec_depend>
+  <exec_depend>pyrene-motions</exec_depend>
+  <exec_depend>dynamic_graph_bridge</exec_depend>
+  <exec_depend>dynamic_graph_bridge_msgs</exec_depend>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <doc_depend>doxygen</doc_depend>
+
+</package>
