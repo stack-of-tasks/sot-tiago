@@ -1,8 +1,8 @@
 sot_tiago
 ===========
 
-[![Pipeline status](https://gepgitlab.laas.fr/stack-of-tasks/sot-tiago/badges/master/pipeline.svg)](https://gepgitlab.laas.fr/stack-of-tasks/sot-tiago/commits/master)
-[![Coverage report](https://gepgitlab.laas.fr/stack-of-tasks/sot-tiago/badges/master/coverage.svg?job=doc-coverage)](http://projects.laas.fr/gepetto/doc/stack-of-tasks/sot-tiago/master/coverage/)
+[![Pipeline status](https://gitlab.laas.fr/stack-of-tasks/sot-tiago/badges/master/pipeline.svg)](https://gitlab.laas.fr/stack-of-tasks/sot-tiago/commits/master)
+[![Coverage report](https://gitlab.laas.fr/stack-of-tasks/sot-tiago/badges/master/coverage.svg?job=doc-coverage)](http://projects.laas.fr/gepetto/doc/stack-of-tasks/sot-tiago/master/coverage/)
 
 
 This packages provides a generic Stack Of Tasks library
