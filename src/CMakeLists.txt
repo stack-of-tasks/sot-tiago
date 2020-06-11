@@ -20,7 +20,8 @@ INSTALL(TARGETS ${NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION ${DYNAMIC_GRAP
 # build python submodule
 STRING(REPLACE - _ PYTHON_LIBRARY_NAME ${NAME})
 DYNAMIC_GRAPH_PYTHON_MODULE("sot/tiago/${PYTHON_LIBRARY_NAME}"
-  ${NAME} sot-tiago-${PYTHON_LIBRARY_NAME}-wrap)
+  ${NAME} sot-tiago-${PYTHON_LIBRARY_NAME}-wrap
+  SOURCE_PYTHON_MODULE ${CMAKE_CURRENT_SOURCE_DIR}/diff_drive_controller-python-module.cc)
 
 # Install Python files.
 SET(PYTHON_MODULE dynamic_graph/sot/tiago)
@@ -48,7 +49,8 @@ INSTALL(TARGETS ${DEVICE_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
 # build python submodule
 STRING(REPLACE - _ PYTHON_LIBRARY_NAME ${DEVICE_NAME})
 DYNAMIC_GRAPH_PYTHON_MODULE("sot/tiago/${PYTHON_LIBRARY_NAME}"
-  ${DEVICE_NAME} sot-tiago-${PYTHON_LIBRARY_NAME}-wrap)
+  ${DEVICE_NAME} sot-tiago-${PYTHON_LIBRARY_NAME}-wrap
+  MODULE_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/device-python.hh)
 
 
 # Add the library to wrap the controller of Tiago.
