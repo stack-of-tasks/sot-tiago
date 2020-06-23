@@ -1,6 +1,6 @@
 /**
 
-\page sot_tiago_xenial_run_simulation Run for Tiago on your Xenial Machine
+\page sot_tiago_xenial_02_run_simulation Run for Tiago on your Xenial Machine
 
 Testing the simulation
 

@@ -1,13 +1,16 @@
 /**
 
-\page sot_tiago_xenial_install_simulation Software installation for Tiago on your Xenial Machine
-Prepare your environment for robotpkg
+\page sot_tiago_xenial_01_install_simulation Software installation for Tiago on your Xenial Machine
 
-You should create a file called robotpkg.list in directory /etc/apt/sources.lists.d. The contains of this file should be:
+<b> Prepare your environment for robotpkg </b>
 
-# cat /etc/apt/sources.list.d/robotpkg.list
-deb [arch=amd64] http://robotpkg.openrobots.org/wip/packages/debian/pub xenial robotpkg
-deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub xenial robotpkg
+You should create a file called <b> robotpkg.list </b>  in directory <b> /etc/apt/sources.lists.d. </b>  The contains of this file should be:
+
+    \code 
+    # cat /etc/apt/sources.list.d/robotpkg.list
+    deb [arch=amd64] http://robotpkg.openrobots.org/wip/packages/debian/pub xenial robotpkg
+    deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub xenial robotpkg 
+    \endcode
 
 It is important to put pal repository in first position so that all software versions work well together.
 
@@ -15,34 +18,40 @@ Please choose the appropriate distribution name. For instance if you are running
 
 Download the key from robotpkg to recognize the apt-repository
 
+\code 
 curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
    sudo apt-key add -
+\endcode 
 
 Then update the list of available packages by typing:
 
-sudo apt-get update
+\code sudo apt-get update \endcode
 
-Prepare your environment for the PAL packages
+<b>  Prepare your environment for the PAL packages </b>
 
 If you do not already have it, install ROS
 
-For Kinetic
+<b>  For Kinetic </b>
 
 You should install the following packages:
 
+\code
 sudo apt-get install ros-kinetic-twist-mux ros-kinetic-joy-teleop ros-kinetic-moveit-ros-move-group ros-kinetic-humanoid-nav-msgs ros-kinetic-play-motion ros-kinetic-ompl ros-kinetic-moveit-planners-ompl ros-kinetic-moveit-simple-controller-manager ros-kinetic-control-toolbox ros-kinetic-four-wheel-steering-msgs ros-kinetic-urdf-geometry-parser ros-kinetic-gazebo-ros-control
+\endcode
 
-PAL and Gepetto Software
+<b>  PAL and Gepetto Software </b> 
 
-From binaries
+<b> From binaries </b> 
 
 Please type:
 
+\code
 sudo apt-get install robotpkg-sot-tiago robotpkg-tiago-dev
+\end code
 
 To have the simulation
 
-sudo apt-get install robotpkg-tiago-simulation
+\code sudo apt-get install robotpkg-tiago-simulation \endcode
 
 The next step is to set your environment variables. You can automatize this by following the steps described here. Please read the instructions carefully. Setting bash variables might be tricky and lead to failure.
 
@@ -52,10 +61,12 @@ The best way is to use robotpkg.
 
 With robotpkg
 
-    To install from source (still under testing too) please install robotpkg and robotpkg-wip.
+To install from source (still under testing too) please install robotpkg and robotpkg-wip.
 
-    The instructions for installing robotpkg are given here. And the instructions for installing robotpkg-wip are given here. Once this is done you should go in the robotpkg-wip directory and then type:
+The instructions for installing robotpkg are given here. And the instructions for installing robotpkg-wip are given here. Once this is done you should go in the robotpkg-wip directory and then type:
 
-     cd tiago-dev
-     make install
- */
+    \code
+    cd tiago-dev
+    make install
+    \endcode
+*/

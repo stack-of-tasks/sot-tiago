@@ -1,6 +1,6 @@
 /**
 
-\page sot_tiago_xenial_install_robot Installation of the software on the robot
+\page sot_tiago_xenial_03_install_robot Installation of the software on the robot
 
 Installation of the software on the robot
 
