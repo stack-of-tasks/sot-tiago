@@ -1,3 +1,7 @@
-INPUT                  = @CMAKE_SOURCE_DIR@/include
+INPUT = @CMAKE_SOURCE_DIR@/include \
+      @CMAKE_SOURCE_DIR@/doc
 
-FILE_PATTERNS          = *.cc *.cpp *.h *.hh *.hxx
+HIDE_FRIEND_COMPOUNDS  = YES
+
+IMAGE_PATH             = @CMAKE_SOURCE_DIR@/doc
+USE_MATHJAX            = YES
