@@ -6,11 +6,10 @@
 
 You should create a file called <b> robotpkg.list </b>  in directory <b> /etc/apt/sources.lists.d. </b>  The contains of this file should be:
 
-    \code
     # cat /etc/apt/sources.list.d/robotpkg.list
     deb [arch=amd64] http://robotpkg.openrobots.org/wip/packages/debian/pub xenial robotpkg
     deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub xenial robotpkg
-    \endcode
+
 
 It is important to put pal repository in first position so that all software versions work well together.
 
@@ -18,14 +17,12 @@ Please choose the appropriate distribution name. For instance if you are running
 
 Download the key from robotpkg to recognize the apt-repository
 
-\code
-curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
-   sudo apt-key add -
-\endcode
+    curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
+    sudo apt-key add -
 
 Then update the list of available packages by typing:
 
-\code sudo apt-get update \endcode
+    sudo apt-get update
 
 <b>  Prepare your environment for the PAL packages </b>
 
@@ -33,29 +30,35 @@ If you do not already have it, install ROS
 
 <b>  For Kinetic </b>
 
-You should install the following packages:
+- You should install the following packages:
 
-\code
-sudo apt-get install ros-kinetic-twist-mux ros-kinetic-joy-teleop ros-kinetic-moveit-ros-move-group ros-kinetic-humanoid-nav-msgs ros-kinetic-play-motion ros-kinetic-ompl ros-kinetic-moveit-planners-ompl ros-kinetic-moveit-simple-controller-manager ros-kinetic-control-toolbox ros-kinetic-four-wheel-steering-msgs ros-kinetic-urdf-geometry-parser ros-kinetic-gazebo-ros-control
-\endcode
+    sudo apt-get install ros-kinetic-twist-mux \
+                        ros-kinetic-joy-teleop \ 
+                        ros-kinetic-moveit-ros-move-group \
+                        ros-kinetic-humanoid-nav-msgs \
+                        ros-kinetic-play-motion \
+                        ros-kinetic-ompl \ 
+                        ros-kinetic-moveit-planners-ompl \
+                        ros-kinetic-moveit-simple-controller-manager \
+                        ros-kinetic-control-toolbox \
+                        ros-kinetic-four-wheel-steering-msgs \
+                        ros-kinetic-urdf-geometry-parser \
+                        ros-kinetic-gazebo-ros-control
+
 
 <b>  PAL and Gepetto Software </b>
 
 <b> From binaries </b>
+    sudo apt-get install robotpkg-sot-tiago robotpkg-tiago-dev
 
-Please type:
-
-\code
-sudo apt-get install robotpkg-sot-tiago robotpkg-tiago-dev
-\end code
 
 To have the simulation
 
-\code sudo apt-get install robotpkg-tiago-simulation \endcode
+    sudo apt-get install robotpkg-tiago-simulation 
 
 The next step is to set your environment variables. You can automatize this by following the steps described here. Please read the instructions carefully. Setting bash variables might be tricky and lead to failure.
 
-From source
+<b>From source <b>
 
 The best way is to use robotpkg.
 
