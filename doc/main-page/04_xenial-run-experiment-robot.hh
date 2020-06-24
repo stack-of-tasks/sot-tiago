@@ -4,17 +4,16 @@
 
 This page details how to run an experiment on Tiago
 
-1. The best practice is to test the movement on Gazebo before performing on the real robot
+- The best practice is to test the movement on Gazebo before performing on the real robot
 
-2. Turn the Tiago on
+- Turn the Tiago on
 
-3. If necessary, transfer your packages from the development machine to the robot
+- If necessary, transfer your packages from the development machine to the robot
 
-4. Check the Web Commander. Put the arm to the Home position
+- Check the Web Commander. Put the arm to the Home position
 
-5. On Tiago-48c, run:
+- On Tiago-48c, run:
 
-    
     python /opt/openrobots/share/sot-tiago/tests/stop-controllers.py
 
     pal-stop deployer
@@ -29,16 +28,14 @@ This page details how to run an experiment on Tiago
     roslaunch roscontrol_sot_tiago sot_tiago_controller.launch use_mobile_base:=false
     
 
-6. Run your experiment as you do it in simulation. For instance, on development machine
+- Run your experiment as you do it in simulation. For instance, on development machine
     
     source ~/setup-opt-robotpkg.sh
     cd <test directory>
     python test.py
-   
 
-    and/or
+and/or
 
-    
     source ~/setup-opt-robotpkg.sh
     rosrun dynamic_graph_bridge run_command
     

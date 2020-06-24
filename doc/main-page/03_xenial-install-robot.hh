@@ -2,23 +2,18 @@
 
 \page sot_tiago_xenial_03_install_robot Installation of the software on the robot
 
-Installation of the software on the robot
-
-Introduction
+\b Introduction
 
 The complete installation is done according to the following steps:
 
-    Preparing the binary form of your software either from robotpkg binary packages or through compilation inside the directory of development mechine:
+- Preparing the binary form of your software either from robotpkg binary packages or through compilation inside the directory of development machine:
+    - /opt/openrobots
 
-      /opt/openrobots
+- Synchronizing the directory on the robot 
 
-    Synchronizing the directory on the robot 
-
-Preparing development machine
-
-Binaries
-
-    Setting a source.list file
+- Preparing development machine
+    -Binaries
+        - Setting a source.list file
         Robotpkg has two apt repository: a main repository and a work-in-progress repository: 
 
         sudo tee /etc/apt/sources.list.d/robotpkg.list <<EOF
@@ -27,18 +22,15 @@ Binaries
         EOF
 
         Register the robotpkg authentication key
-
            curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key | sudo apt-key add -
 
-    Install the binary packages you want on akagisan. The following line installs all the needed packages for sot-tiago on akagisan:
-
+        - Install the binary packages you want on akagisan. The following line installs all the needed packages for sot-tiago on akagisan:
            sudo apt-get update
            sudo apt-get install robotpkg-tiago-dev
            sudo apt-get install robotpkg-octomap
 
-    Verify the if the following file has been updated to use eigenpy
-
-           /opt/openrobots/lib/python2.7/site-packages/dynamic_graph/sot/tiago/steel/prologue.py
+        - Verify the if the following file has been updated to use eigenpy
+            /opt/openrobots/lib/python2.7/site-packages/dynamic_graph/sot/tiago/steel/prologue.py
 
         It should has the following lines to bridge eigenpy and numpy
 
