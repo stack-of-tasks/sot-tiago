@@ -6,10 +6,10 @@
 
 You should create a file called <b> robotpkg.list </b>  in directory <b> /etc/apt/sources.lists.d. </b>  The contains of this file should be:
 
-    \code 
+    \code
     # cat /etc/apt/sources.list.d/robotpkg.list
     deb [arch=amd64] http://robotpkg.openrobots.org/wip/packages/debian/pub xenial robotpkg
-    deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub xenial robotpkg 
+    deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub xenial robotpkg
     \endcode
 
 It is important to put pal repository in first position so that all software versions work well together.
@@ -18,10 +18,10 @@ Please choose the appropriate distribution name. For instance if you are running
 
 Download the key from robotpkg to recognize the apt-repository
 
-\code 
+\code
 curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
    sudo apt-key add -
-\endcode 
+\endcode
 
 Then update the list of available packages by typing:
 
@@ -39,9 +39,9 @@ You should install the following packages:
 sudo apt-get install ros-kinetic-twist-mux ros-kinetic-joy-teleop ros-kinetic-moveit-ros-move-group ros-kinetic-humanoid-nav-msgs ros-kinetic-play-motion ros-kinetic-ompl ros-kinetic-moveit-planners-ompl ros-kinetic-moveit-simple-controller-manager ros-kinetic-control-toolbox ros-kinetic-four-wheel-steering-msgs ros-kinetic-urdf-geometry-parser ros-kinetic-gazebo-ros-control
 \endcode
 
-<b>  PAL and Gepetto Software </b> 
+<b>  PAL and Gepetto Software </b>
 
-<b> From binaries </b> 
+<b> From binaries </b>
 
 Please type:
 
