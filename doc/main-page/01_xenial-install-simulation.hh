@@ -30,7 +30,7 @@ If you do not already have it, install ROS
 
 <b>  For Kinetic </b>
 
-- You should install the following packages:
+You should install the following packages:
 
     sudo apt-get install ros-kinetic-twist-mux \
                         ros-kinetic-joy-teleop \ 
@@ -49,6 +49,7 @@ If you do not already have it, install ROS
 <b>  PAL and Gepetto Software </b>
 
 <b> From binaries </b>
+
     sudo apt-get install robotpkg-sot-tiago robotpkg-tiago-dev
 
 
@@ -58,18 +59,16 @@ To have the simulation
 
 The next step is to set your environment variables. You can automatize this by following the steps described here. Please read the instructions carefully. Setting bash variables might be tricky and lead to failure.
 
-<b>From source <b>
+<b>From source </b>
 
 The best way is to use robotpkg.
 
-With robotpkg
+    
+- To install from source (still under testing too) please install robotpkg and robotpkg-wip.
 
-To install from source (still under testing too) please install robotpkg and robotpkg-wip.
+- The instructions for installing robotpkg are given here. And the instructions for installing robotpkg-wip are given here. Once this is done you should go in the robotpkg-wip directory and then type:
 
-The instructions for installing robotpkg are given here. And the instructions for installing robotpkg-wip are given here. Once this is done you should go in the robotpkg-wip directory and then type:
-
-    \code
     cd tiago-dev
     make install
-    \endcode
+    
 */

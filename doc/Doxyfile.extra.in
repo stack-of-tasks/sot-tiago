@@ -1,7 +1,13 @@
 INPUT = @CMAKE_SOURCE_DIR@/include \
-      @CMAKE_SOURCE_DIR@/doc
-
+        @CMAKE_SOURCE_DIR@/doc \
+        @CMAKE_SOURCE_DIR@/vcs-files
 HIDE_FRIEND_COMPOUNDS  = YES
 
-IMAGE_PATH             = @CMAKE_SOURCE_DIR@/doc
+IMAGE_PATH             = @CMAKE_SOURCE_DIR@/doc \
+                         @CMAKE_SOURCE_DIR@/vcs-files
 USE_MATHJAX            = YES
+
+HTML_EXTRA_FILES       = @CMAKE_SOURCE_DIR@/doc/vcs-files/hpp.repos\
+                         @CMAKE_SOURCE_DIR@/doc/vcs-files/agimus.repos\
+                         @CMAKE_SOURCE_DIR@/doc/vcs-files/sot_tiago.repos
+
