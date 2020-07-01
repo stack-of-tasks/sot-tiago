@@ -60,15 +60,7 @@ To have the simulation
 The next step is to set your environment variables. You can automatize this by following the steps described here. Please read the instructions carefully. Setting bash variables might be tricky and lead to failure.
 
 <b>From source </b>
-
-The best way is to use robotpkg.
-
     
-- To install from source (still under testing too) please install robotpkg and robotpkg-wip.
+- To install from source, please use vcs to downloads the packages mentioned in the sot_tiago.repos file and build from source either by catkin or cmake
 
-- The instructions for installing robotpkg are given here. And the instructions for installing robotpkg-wip are given here. Once this is done you should go in the robotpkg-wip directory and then type:
-
-    cd tiago-dev
-    make install
-    
 */
