@@ -38,7 +38,7 @@
         rosrun dynamic_graph_bridge run_command
         
 
-    The content of the script setup-opt-robotpkg.sh: \n
+    The content of the script setup-opt-robotpkg.sh:
 
         #!/bin/bash 
         export ROBOTPKG_BASE=/opt/openrobots
@@ -49,13 +49,14 @@
         export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$ROBOTPKG_BASE/share:$ROBOTPKG_BASE/stacks
         export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$ROBOTPKG_BASE
 
-- Run the following command if you want to before starting sot controller again \n
+- Run the following command to restart PAL's deployer, in which SoT runs.
+  This is required to restart SoT controller again
 
         pal-stop ros_bringup && pal-stop deployer && pal-start deployer && pal-start ros_bringup
 
-- When you are done, turn the robot off. \n
+- When you are done, turn the robot off.
 
-- At the end of the day, please put Tiago back to its charging place  \n
+- At the end of the day, please put Tiago back to its charging place.
 
 */
 

@@ -33,11 +33,11 @@ If you do not already have it, install ROS
 You should install the following packages:
 
     sudo apt-get install ros-kinetic-twist-mux \
-                        ros-kinetic-joy-teleop \ 
+                        ros-kinetic-joy-teleop \
                         ros-kinetic-moveit-ros-move-group \
                         ros-kinetic-humanoid-nav-msgs \
                         ros-kinetic-play-motion \
-                        ros-kinetic-ompl \ 
+                        ros-kinetic-ompl \
                         ros-kinetic-moveit-planners-ompl \
                         ros-kinetic-moveit-simple-controller-manager \
                         ros-kinetic-control-toolbox \

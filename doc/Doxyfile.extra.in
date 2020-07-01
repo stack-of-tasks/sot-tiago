@@ -1,6 +1,4 @@
-INPUT = @CMAKE_SOURCE_DIR@/include \
-        @CMAKE_SOURCE_DIR@/doc \
-        @CMAKE_SOURCE_DIR@/vcs-files
+INPUT = @CMAKE_SOURCE_DIR@/doc
 HIDE_FRIEND_COMPOUNDS  = YES
 
 IMAGE_PATH             = @CMAKE_SOURCE_DIR@/doc \
