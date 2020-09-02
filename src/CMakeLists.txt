@@ -40,10 +40,6 @@ ADD_LIBRARY(${DEVICE_NAME} SHARED sot-tiago-device.cpp)
 # Link the dynamic library containing the SoT with its dependencies.
 TARGET_LINK_LIBRARIES(${DEVICE_NAME} sot-core::sot-core)
 
-IF(UNIX AND NOT APPLE)
-  TARGET_LINK_LIBRARIES(${DEVICE_NAME} ${Boost_LIBRARIES})
-ENDIF(UNIX AND NOT APPLE)
-
 INSTALL(TARGETS ${DEVICE_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
 
 # build python submodule
@@ -63,9 +59,5 @@ ADD_LIBRARY(${CONTROLLER_NAME} SHARED
 # Link the dynamic library containing the SoT with its dependencies.
 TARGET_LINK_LIBRARIES(${CONTROLLER_NAME} sot-core::sot-core dynamic-graph-python::dynamic-graph-python
     dynamic_graph_bridge::ros_bridge dynamic_graph_bridge::ros_interpreter sot-tiago-device)
-
-IF(UNIX AND NOT APPLE)
-  TARGET_LINK_LIBRARIES(${CONTROLLER_NAME} ${Boost_LIBRARIES})
-ENDIF(UNIX AND NOT APPLE)
 
 INSTALL(TARGETS ${CONTROLLER_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)

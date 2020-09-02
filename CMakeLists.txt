@@ -20,7 +20,6 @@ SET(CXX_DISABLE_WERROR TRUE)
 # JRL-cmakemodule setup
 INCLUDE(cmake/base.cmake)
 INCLUDE(cmake/boost.cmake)
-INCLUDE(cmake/eigen.cmake)
 INCLUDE(cmake/lapack.cmake)
 INCLUDE(cmake/ros.cmake)
 INCLUDE(cmake/python.cmake)
@@ -30,16 +29,14 @@ COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 PROJECT(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Project dependencies
-SET(BOOST_COMPONENTS filesystem system thread)
+FINDPYTHON()
+SEARCH_FOR_BOOST_PYTHON()
 
 ADD_PROJECT_DEPENDENCY(sot-dynamic-pinocchio REQUIRED PKG_CONFIG_REQUIRES sot-dynamic-pinocchio)
-ADD_PROJECT_DEPENDENCY(dynamic-graph-python REQUIRED PKG_CONFIG_REQUIRES dynamic-graph-python)
+ADD_PROJECT_DEPENDENCY(dynamic-graph-python 4.0.0 REQUIRED PKG_CONFIG_REQUIRES dynamic-graph-python)
 ADD_PROJECT_DEPENDENCY(dynamic_graph_bridge REQUIRED PKG_CONFIG_REQUIRES dynamic_graph_bridge)
 ADD_PROJECT_DEPENDENCY(tiago_data)
 ADD_REQUIRED_DEPENDENCY(dynamic_graph_bridge_msgs)
-
-FINDPYTHON()
-SEARCH_FOR_BOOST()
 
 # Main Library
 ADD_LIBRARY(${PROJECT_NAME} INTERFACE)
