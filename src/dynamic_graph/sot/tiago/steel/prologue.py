@@ -5,7 +5,7 @@
 # required by rospy
 import sys
 
-from dynamic_graph.entity import PyEntityFactoryClass
+from dynamic_graph.sot.tiago.sot_tiago_device import DeviceTiago
 from dynamic_graph.sot.tiago.steel.robot import TiagoSteel as Robot
 
 if not hasattr(sys, 'argv'):
@@ -22,8 +22,6 @@ print("Prologue TIAGO Steel Robot")
 # 2. it forwards the robot control to the sot-abstract
 #    controller.
 def makeRobot(with_wheels=True):
-    DeviceTiago = PyEntityFactoryClass('DeviceTiago')
-
     # Create the robot using the device.
     robot = Robot(name='tiago', device=DeviceTiago('TIAGOSTEEL'), with_wheels=with_wheels, fromRosParam=True)
 
