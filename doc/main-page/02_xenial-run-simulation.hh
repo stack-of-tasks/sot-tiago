@@ -1,27 +1,25 @@
 /**
 
-\page sot_tiago_xenial_02_run_simulation Run for Tiago on your Xenial Machine
+\page sot_tiago_xenial_02_run_simulation Run for Tiago on Ubuntu 18.04 Machine
 
-<b> Testing the simulation </b>
+<h4> Testing on development machine with gazebo </h4>
 
-To start the simulation with the Tiago robot equipped with the Schunk gripper:
+In one termninal, run the following command to start tiago in gazebo:
 
-    roslaunch tiago_gazebo tiago_gazebo.launch public_sim:=true robot:=steel end_effector:=schunk-wsg
+    roslaunch /opt/pal/ferrum/share/tiago_gazebo/launch/tiago_gazebo.launch public_sim:=true robot:=steel end_effector:=schunk-wsg
 
-Before launching the SoT controller for Tiago, the default controller in Gazebo must be stopped to avoid the resources conflict:
+In another, run the following command top stop the default controllers on Tiago:
 
     python /opt/openrobots/share/sot-tiago/tests/stop-controllers.py
 
-To start the SoT in simulation in position mode:
+On the third terminal, run the following command to start the SoT controllers on Tiago:
 
-    roslaunch roscontrol_sot_tiago controller.launch use_mobile_base:=false simulation:=true
+    roslaunch roscontrol_sot_tiago controller.launch use_mobile_base:=false simulation:=true end_effector:=schunk-wsg
 
-Set the current folder to the test files and try to move the arm
+Finally, on the second terminal, run the following command to test
 
-    cd /opt/openrobots/share/sot-tiago/tests/
-    python test.py
+    python /opt/openrobots/share/sot-tiago/tests/test.py
 
-By default, the code above will let the wrist of the robot move to the specific position defined in the line "target = (0.5,0.0,0.5)"
 
 <b> To move the "wrist" to another position: </b>
 
