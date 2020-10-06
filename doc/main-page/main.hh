@@ -1,8 +1,8 @@
 /**
 
-\mainpage SoT on Tiago
+\mainpage Stack of Tasks on Tiago
 
-On your Ubuntu 18.04 machine:
+On Ubuntu 18.04 machine (personal and Tiago's development machine):
 \li \ref sot_tiago_bionic_01_install_simulation "Installation"
 \li \ref sot_tiago_bionic_02_run_simulation "Simulation"
 
