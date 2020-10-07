@@ -6,15 +6,20 @@
 
 In one termninal, run the following command to start tiago in gazebo:
 
-<ul>
-<li> For Tiago's development computer: </li>
-</ul>
+
+- For Tiago's development computer:
+
+
     roslaunch /opt/pal/ferrum/share/tiago_gazebo/launch/tiago_gazebo.launch public_sim:=true robot:=steel end_effector:=schunk-wsg
 
-<ul>
-<li>For personal computer: </li>
-</ul>
+
+- For personal computer: 
+
+
     roslaunch tiago_gazebo tiago_gazebo.launch public_sim:=true robot:=steel end_effector:=schunk-wsg
+    
+    
+- Tiago also has other end effector: pal-gripper, pal-hey5 
 
 In another, run the following command top stop the default controllers on Tiago:
 

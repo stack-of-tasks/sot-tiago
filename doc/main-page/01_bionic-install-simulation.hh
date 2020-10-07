@@ -20,20 +20,21 @@ The complete installation is done according to the following steps:
 
 Install ROS melodic (full installation with Gazebo recommanded) and the following packages:
 
-    sudo apt-get install ros-melodic-twist-mux ros-melodic-joy-teleop \ 
-    ros-melodic-moveit-ros-move-group ros-melodic-humanoid-nav-msgs \
-    ros-melodic-play-motion ros-melodic-ompl ros-melodic-moveit-planners-ompl \ 
+    sudo apt-get install ros-melodic-twist-mux ros-melodic-joy-teleop \
+    ros-melodic-moveit-ros-move-group ros-melodic-ompl ros-melodic-moveit-planners-ompl \
     ros-melodic-moveit-simple-controller-manager ros-melodic-control-toolbox \
     ros-melodic-four-wheel-steering-msgs ros-melodic-urdf-geometry-parser \
-    ros-melodic-gazebo-ros-control
+    python-catkin-tools git doxygen ros-melodic-moveit
+
 
 <b> The followings steps apply on both type of machines</b> \n
 Setting a source.list file
 
-    sudo tee /etc/apt/sources.list.d/robotpkg.list <<EOF
-    deb [arch=amd64] http://robotpkg.openrobots.org/wip/packages/debian/pub $(lsb_release -cs) robotpkg
-    deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub $(lsb_release -cs) robotpkg
-    EOF
+    sudo vim /etc/apt/sources.list.d/robotpkg.list
+
+    deb [arch=amd64] http://robotpkg.openrobots.org/wip/packages/debian/pub bionic robotpkg
+    deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub bionic robotpkg
+    
 
 Register the robotpkg authentication key
 
@@ -69,6 +70,12 @@ In case some libraries are missising due to robotpkg's issue, please git the rel
 It is prefered to run the following command to use install space before building
 
     catkin config --install
+
+Clone the missing library's repository, <b> for example, not always </b> sot-core version 4.10.1:
+
+    git clone --recursive https://github.com/stack-of-tasks/sot-core -b release/4.10.1
+
+
 
 The environment paths are important to make sure that Sot will not use wrong library with same name from ros-melodic. for example, LD_LIBRARY_PATH should have the robotpkg's lib in priority
 
