@@ -1,5 +1,5 @@
 /**
-\page sot_tiago_xenial_05_build_sot_hpp_agimus Source build for Tiago to include SoT, Agimus and HPP
+\page sot_tiago_bionic_05_build_sot_hpp_agimus Source build for Tiago to include SoT, Agimus and HPP
 
 <b> Install prerequisites packages</b>
 

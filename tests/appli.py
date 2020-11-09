@@ -1,10 +1,12 @@
 # flake8: noqa
 from dynamic_graph import plug
 from dynamic_graph.ros import RosPublish
-from dynamic_graph.sot.core import SOT
 from dynamic_graph.sot.core.matrix_util import matrixToTuple
-from dynamic_graph.sot.core.meta_tasks_kine import MetaTaskKine6d, MetaTaskKineCom, gotoNd
+from dynamic_graph.sot.core.meta_tasks_kine import MetaTaskKine6d
+from dynamic_graph.sot.core.meta_tasks_kine import gotoNd
 from dynamic_graph.sot.tiago.diff_drive_controller import HolonomicProjection
+from dynamic_graph.sot.core.sot import SOT
+
 from numpy import eye
 
 taskRH = MetaTaskKine6d('rh', robot.dynamic, 'rh', robot.OperationalPointsMap['wrist'])
@@ -34,5 +36,9 @@ ros_publish_state = RosPublish("ros_publish_state")
 ros_publish_state.add("vector", "state", "/sot_control/state")
 plug(robot.device.state, ros_publish_state.state)
 robot.device.after.addDownsampledSignal("ros_publish_state.trigger", 100)
+
+target = (0.5,-0.2,1.0)
+gotoNd(taskRH,target,'111',(4.9,0.9,0.01,0.9))
+sot.push(taskRH.task.name)
 
 robot.device.control.recompute(0)
