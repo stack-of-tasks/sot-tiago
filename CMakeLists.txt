@@ -23,22 +23,15 @@ include(cmake/base.cmake)
 include(cmake/boost.cmake)
 include(cmake/lapack.cmake)
 include(cmake/ros.cmake)
-include(cmake/python.cmake)
 
 # Project definition
 compute_project_args(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Project dependencies
-findpython()
-search_for_boost_python()
-
-add_project_dependency(sot-dynamic-pinocchio REQUIRED PKG_CONFIG_REQUIRES
-                       sot-dynamic-pinocchio)
-add_project_dependency(dynamic-graph-python 4.0.0 REQUIRED PKG_CONFIG_REQUIRES
-                       dynamic-graph-python)
-add_project_dependency(dynamic_graph_bridge REQUIRED PKG_CONFIG_REQUIRES
-                       dynamic_graph_bridge)
+add_project_dependency(sot-dynamic-pinocchio REQUIRED)
+add_project_dependency(dynamic-graph-python 4.0.6 REQUIRED)
+add_project_dependency(dynamic_graph_bridge REQUIRED)
 add_project_dependency(tiago_data)
 add_required_dependency(dynamic_graph_bridge_msgs)
 
