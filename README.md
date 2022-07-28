@@ -1,17 +1,16 @@
-sot_tiago
-===========
+# sot-tiago
 
 [![Pipeline status](https://gitlab.laas.fr/stack-of-tasks/sot-tiago/badges/master/pipeline.svg)](https://gitlab.laas.fr/stack-of-tasks/sot-tiago/commits/master)
-[![Coverage report](https://gitlab.laas.fr/stack-of-tasks/sot-tiago/badges/master/coverage.svg?job=doc-coverage)](http://projects.laas.fr/gepetto/doc/stack-of-tasks/sot-tiago/master/coverage/)
-
+[![Coverage report](https://gitlab.laas.fr/stack-of-tasks/sot-tiago/badges/master/coverage.svg?job=doc-coverage)](https://gepettoweb.laas.fr/doc/stack-of-tasks/sot-tiago/master/coverage/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/stack-of-tasks/sot-tiago/master.svg)](https://results.pre-commit.ci/latest/github/stack-of-tasks/sot-tiago)
 
 This packages provides a generic Stack Of Tasks library
 for the robot Tiago. This library is highly
 portable and can be used in various simulators, and
 the robot itself.
 
-Install
------
+## Install
 
 To compile this package, it is recommended to create a separate build
 directory:
@@ -24,7 +23,9 @@ directory:
 Please note that CMake produces a `CMakeCache.txt` file which should
 be deleted to reconfigure a package from scratch.
 
-To use:
-=======
+## To use:
+
 To embed this library an example is provided in:
+```
 sot/core/tools/test_abstract_interface.cpp
+```
