@@ -13,7 +13,7 @@ ddc.setPeriod(0.1)
 ddc.setOpenLoop(True)
 
 # Initialize
-ddc.baseVelIn.value = (0., 0., 0., 0., 0., 0.)
+ddc.baseVelIn.value = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 ddc.wheelsVelOut.recompute(0)
 
 # ddc.baseVelIn.value = ( 1., 0., 0., 0., 0., 0. )
@@ -37,7 +37,14 @@ def runCircle(N):
     t0 = ddc.basePoseOut.time + 1
     for t in range(t0, t0 + N + 1):
         x, y, theta = ddc.basePoseOut.value
-        ddc.baseVelIn.value = (cos(theta), sin(theta), 0., 0., 0., 2 * pi / (N * ddc.getPeriod()))
+        ddc.baseVelIn.value = (
+            cos(theta),
+            sin(theta),
+            0.0,
+            0.0,
+            0.0,
+            2 * pi / (N * ddc.getPeriod()),
+        )
         ddc.baseVelIn.time = t
 
         ddc.wheelsVelOut.recompute(t)

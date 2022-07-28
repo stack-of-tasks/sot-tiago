@@ -1,20 +1,23 @@
 /**
 
-\page sot_tiago_bionic_03_install_robot Installation of the software on the robot
+\page sot_tiago_bionic_03_install_robot Installation of the software on the
+robot
 
 <h2> Introduction </h2>
 
 The complete installation is done according to the following steps:
 
-- Preparing the binary form of your software either from robotpkg binary packages or through compilation inside the directory of development machine:
+- Preparing the binary form of your software either from robotpkg binary
+packages or through compilation inside the directory of development machine:
     /opt/openrobots
 
-- Synchronizing the directory on the robot 
+- Synchronizing the directory on the robot
 
 <h2> Preparing development machine </h2>
 <h3> Binaries </h3>
 
-Please follow the steps on the previous pages of installing binaries on development computer for Tiago
+Please follow the steps on the previous pages of installing binaries on
+development computer for Tiago
 
 <h3> Synchronizing /opt/openrobots from development machine to the robot </h2>
 
@@ -41,12 +44,12 @@ Please follow the steps on the previous pages of installing binaries on developm
         ro
         exit
 
-- The second exit should give you back the prompt as pal user. 
-    
+- The second exit should give you back the prompt as pal user.
+
 - Reboot Tiago:
 
         ssh pal@tiago-48c
         sudo reboot
 
-    
+
 */

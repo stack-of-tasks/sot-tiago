@@ -10,6 +10,7 @@ from dynamic_graph.sot.dynamic_pinocchio.dynamic import DynamicPinocchio
 from dynamic_graph.sot.dynamic_pinocchio.humanoid_robot import AbstractRobot
 import pinocchio
 
+
 class Tiago(AbstractRobot):
     """
     This class defines a Tiago robot
@@ -25,34 +26,50 @@ class Tiago(AbstractRobot):
         """
         model = self.pinocchioModel
         # set arm position
-        self.setJointValueInConfig(q,
-                [ "arm_{}_joint".format(i+1) for i in range(7) ],
-                (0., -1.569796, -1.569796, 2.355194, 0., 0., 0.,))
+        self.setJointValueInConfig(
+            q,
+            ["arm_{}_joint".format(i + 1) for i in range(7)],
+            (
+                0.0,
+                -1.569796,
+                -1.569796,
+                2.355194,
+                0.0,
+                0.0,
+                0.0,
+            ),
+        )
 
-    def __init__(self, robotName, device=None, tracer=None, with_wheels=True, fromRosParam=False):
+    def __init__(
+        self, robotName, device=None, tracer=None, with_wheels=True, fromRosParam=False
+    ):
         self.OperationalPointsMap = {
-            'wrist': 'arm_7_joint',
-            'right-wheel': 'wheel_right_joint',
-            'left-wheel': 'wheel_left_joint',
-            'mobilebase': 'root_joint',
-            'footprint': 'base_footprint_joint',
-            'gaze': 'head_2_joint',
+            "wrist": "arm_7_joint",
+            "right-wheel": "wheel_right_joint",
+            "left-wheel": "wheel_left_joint",
+            "mobilebase": "root_joint",
+            "footprint": "base_footprint_joint",
+            "gaze": "head_2_joint",
         }
 
         if fromRosParam:
-            print("Using ROS parameter \"/robot_description\"")
+            print('Using ROS parameter "/robot_description"')
             rosParamName = "/robot_description"
             import rospy
+
             if rosParamName not in rospy.get_param_names():
                 raise RuntimeError('"' + rosParamName + '" is not a ROS parameter.')
             s = rospy.get_param(rosParamName)
 
-            self.loadModelFromString(s, rootJointType=pinocchio.JointModelFreeFlyer,
-                    removeMimicJoints=True)
+            self.loadModelFromString(
+                s, rootJointType=pinocchio.JointModelFreeFlyer, removeMimicJoints=True
+            )
         else:
-            self.loadModelFromUrdf(self.defaultFilename,
-                    rootJointType=pinocchio.JointModelFreeFlyer,
-                    removeMimicJoints=True)
+            self.loadModelFromUrdf(
+                self.defaultFilename,
+                rootJointType=pinocchio.JointModelFreeFlyer,
+                removeMimicJoints=True,
+            )
 
         # Clean the robot model. Remove:
         # - caster joints
@@ -63,12 +80,15 @@ class Tiago(AbstractRobot):
         for name in self.pinocchioModel.names:
             if not with_wheels and name.startswith("wheel_"):
                 jointsToRemove.append(name)
-            elif name.startswith('caster'):
+            elif name.startswith("caster"):
                 jointsToRemove.append(name)
-            elif name.startswith('suspension'):
+            elif name.startswith("suspension"):
                 jointsToRemove.append(name)
-            elif name.startswith('hand_') and \
-                    name not in ("hand_thumb_joint", "hand_index_joint", "hand_mrl_joint"):
+            elif name.startswith("hand_") and name not in (
+                "hand_thumb_joint",
+                "hand_index_joint",
+                "hand_mrl_joint",
+            ):
                 jointsToRemove.append(name)
 
         print("Removing joints " + ", ".join(jointsToRemove))
@@ -103,7 +123,9 @@ class Tiago(AbstractRobot):
 
     def _initialize(self):
         AbstractRobot._initialize(self)
-        self.OperationalPoints.extend(['wrist', 'left-wheel', 'right-wheel', 'footprint', 'mobilebase', 'gaze'])
+        self.OperationalPoints.extend(
+            ["wrist", "left-wheel", "right-wheel", "footprint", "mobilebase", "gaze"]
+        )
 
 
 __all__ = [Tiago]

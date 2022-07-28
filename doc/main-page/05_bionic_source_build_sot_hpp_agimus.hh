@@ -1,5 +1,6 @@
 /**
-\page sot_tiago_bionic_05_build_sot_hpp_agimus Source build for Tiago to include SoT, Agimus and HPP
+\page sot_tiago_bionic_05_build_sot_hpp_agimus Source build for Tiago to include
+SoT, Agimus and HPP
 
 <b> Install prerequisites packages</b>
 
@@ -25,14 +26,16 @@ On the Development machine:
 
 1. Run the following cmake config arguments
 
-    catkin config -DCMAKE_BUILD_TYPE=Release -DPYTHON_EXECUTABLE=/usr/bin/python2 -DBUILD_TESTING=OFF
+    catkin config -DCMAKE_BUILD_TYPE=Release
+-DPYTHON_EXECUTABLE=/usr/bin/python2 -DBUILD_TESTING=OFF
 
 
 
 2. Build the packages in the following order and arguments
 
     - catkin build hpp-fcl
-    - catkin build hpp-manipulation-corba -DHPP_MANIPULATION_HAS_WHOLEBODY_STEP=FALSE
+    - catkin build hpp-manipulation-corba
+-DHPP_MANIPULATION_HAS_WHOLEBODY_STEP=FALSE
     - catkin build agimus-hpp -DBUILD_HPP_PLUGIN=ON -DBUILD_ROS_INTERFACE=ON
     - catkin build
 

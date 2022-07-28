@@ -8,7 +8,7 @@ import sys
 from dynamic_graph.sot.tiago.sot_tiago_device import DeviceTiago
 from dynamic_graph.sot.tiago.steel.robot import TiagoSteel as Robot
 
-if not hasattr(sys, 'argv'):
+if not hasattr(sys, "argv"):
     sys.argv = [
         "dynamic_graph",
     ]
@@ -23,7 +23,12 @@ print("Prologue TIAGO Steel Robot")
 #    controller.
 def makeRobot(with_wheels=True):
     # Create the robot using the device.
-    robot = Robot(name='tiago', device=DeviceTiago('TIAGOSTEEL'), with_wheels=with_wheels, fromRosParam=True)
+    robot = Robot(
+        name="tiago",
+        device=DeviceTiago("TIAGOSTEEL"),
+        with_wheels=with_wheels,
+        fromRosParam=True,
+    )
 
     return robot
 

@@ -3,10 +3,9 @@
 
 namespace dg = dynamicgraph;
 
-BOOST_PYTHON_MODULE(wrap)
-{
+BOOST_PYTHON_MODULE(wrap) {
   bp::import("dynamic_graph.sot.core.wrap");
 
   dynamicgraph::python::exposeEntity<SoTTiagoDevice,
-    bp::bases<dg::sot::Device> >();
+                                     bp::bases<dg::sot::Device> >();
 }

@@ -16,7 +16,7 @@ projection.setSize(10)
 projection.setWheelSeparation(0.25)
 projection.setWheelRadius(0.2)
 
-matrixHomo = PoseRollPitchYawToMatrixHomo('convert')
+matrixHomo = PoseRollPitchYawToMatrixHomo("convert")
 
 plug(matrixHomo.sout, projection.basePose)
 

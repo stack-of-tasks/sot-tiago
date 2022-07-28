@@ -1,15 +1,25 @@
 # flake8: noqa
 from dynamic_graph import plug
-from dynamic_graph.sot.core import SOT, FeatureGeneric, FeaturePosture, GainAdaptive, Task
+from dynamic_graph.sot.core import (
+    SOT,
+    FeatureGeneric,
+    FeaturePosture,
+    GainAdaptive,
+    Task,
+)
 from dynamic_graph.sot.core.matrix_util import matrixToTuple
 from dynamic_graph.sot.core.meta_tasks import setGain
-from dynamic_graph.sot.core.meta_tasks_kine import MetaTaskKine6d, MetaTaskKineCom, gotoNd
+from dynamic_graph.sot.core.meta_tasks_kine import (
+    MetaTaskKine6d,
+    MetaTaskKineCom,
+    gotoNd,
+)
 from dynamic_graph.sot.tiago.diff_drive_controller import HolonomicProjection
 
 n = "posture"
-tp = Task('task' + n)
+tp = Task("task" + n)
 tp.dyn = robot.dynamic
-tp.feature = FeaturePosture('feature_' + n)
+tp.feature = FeaturePosture("feature_" + n)
 
 q = list(robot.device.robotState.value)
 tp.feature.state.value = q
@@ -95,7 +105,7 @@ projection.setWheelRadius(0.0985)
 projection.setWheelSeparation(0.4044)
 plug(robot.dynamic.mobilebase, projection.basePose)
 
-sot = SOT('sot')
+sot = SOT("sot")
 sot.setSize(robot.dynamic.getDimension())
 
 plug(projection.projection, sot.proj0)

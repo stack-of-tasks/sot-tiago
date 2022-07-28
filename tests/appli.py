@@ -9,11 +9,11 @@ from dynamic_graph.sot.core.sot import SOT
 
 from numpy import eye
 
-taskRH = MetaTaskKine6d('rh', robot.dynamic, 'rh', robot.OperationalPointsMap['wrist'])
+taskRH = MetaTaskKine6d("rh", robot.dynamic, "rh", robot.OperationalPointsMap["wrist"])
 handMgrip = eye(4)
 handMgrip[0:3, 3] = (0.1, 0, 0)
 taskRH.opmodif = matrixToTuple(handMgrip)
-taskRH.feature.frame('desired')
+taskRH.feature.frame("desired")
 
 projection = HolonomicProjection("projection")
 projection.setSize(robot.dynamic.getDimension())
@@ -25,7 +25,7 @@ projection.setWheelRadius(0.0985)
 projection.setWheelSeparation(0.4044)
 plug(robot.dynamic.mobilebase, projection.basePose)
 
-sot = SOT('sot')
+sot = SOT("sot")
 sot.setSize(robot.dynamic.getDimension())
 
 plug(projection.projection, sot.proj0)
@@ -37,8 +37,8 @@ ros_publish_state.add("vector", "state", "/sot_control/state")
 plug(robot.device.state, ros_publish_state.state)
 robot.device.after.addDownsampledSignal("ros_publish_state.trigger", 100)
 
-target = (0.5,-0.2,1.0)
-gotoNd(taskRH,target,'111',(4.9,0.9,0.01,0.9))
+target = (0.5, -0.2, 1.0)
+gotoNd(taskRH, target, "111", (4.9, 0.9, 0.01, 0.9))
 sot.push(taskRH.task.name)
 
 robot.device.control.recompute(0)

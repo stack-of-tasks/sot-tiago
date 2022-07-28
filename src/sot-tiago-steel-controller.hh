@@ -6,7 +6,7 @@
  * LAAS, CNRS
  *
  * This file is part of TIAGOController.
- * TIAGOController is a free software, 
+ * TIAGOController is a free software,
  *
  *
  */
@@ -15,23 +15,19 @@
 #define _SOT_TIAGOSTEEL_Controller_H_
 
 #include "sot-tiago-controller.hh"
-namespace dgsot=dynamicgraph::sot;
+namespace dgsot = dynamicgraph::sot;
 
-class SoTTiagoSteelController: public SoTTiagoController
-{
+class SoTTiagoSteelController : public SoTTiagoController {
  public:
   static const std::string LOG_PYTHON_TIAGOSTEEL;
 
   SoTTiagoSteelController();
-  virtual ~SoTTiagoSteelController() {};
-
+  virtual ~SoTTiagoSteelController(){};
 
  protected:
-
   virtual void startupPython();
-  
-  bool withWheels_;
 
+  bool withWheels_;
 };
 
 #endif /* _SOTTiagoController_H_ */

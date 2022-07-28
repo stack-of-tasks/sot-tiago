@@ -41,314 +41,305 @@
 
 #include "odometry.h"
 
-#include <cmath>
-#include <boost/bind.hpp>
-
 #include <dynamic-graph/command-bind.h>
 #include <dynamic-graph/command-direct-getter.h>
 #include <dynamic-graph/command-direct-setter.h>
 #include <dynamic-graph/factory.h>
 
-namespace dynamicgraph
-{
-namespace details
-{
-  namespace bacc = boost::accumulators;
+#include <boost/bind.hpp>
+#include <cmath>
 
-  Odometry::Odometry(size_t velocity_rolling_window_size)
-  : x_(0.0)
-  , y_(0.0)
-  , heading_(0.0)
-  , linear_(0.0)
-  , angular_(0.0)
-  , wheelSeparation_(0.0)
-  , left_wheelRadius_(0.0)
-  , right_wheelRadius_(0.0)
-  , left_wheel_old_pos_(0.0)
-  , right_wheel_old_pos_(0.0)
-  , velocity_rolling_window_size_(velocity_rolling_window_size)
-  , linear_acc_(RollingWindow::window_size = velocity_rolling_window_size)
-  , angular_acc_(RollingWindow::window_size = velocity_rolling_window_size)
-  , integrate_fun_(boost::bind(&Odometry::integrateExact, this, _1, _2))
-  {
-  }
+namespace dynamicgraph {
+namespace details {
+namespace bacc = boost::accumulators;
 
-  void Odometry::init()
-  {
-    // Reset accumulators:
-    resetAccumulators();
-  }
+Odometry::Odometry(size_t velocity_rolling_window_size)
+    : x_(0.0),
+      y_(0.0),
+      heading_(0.0),
+      linear_(0.0),
+      angular_(0.0),
+      wheelSeparation_(0.0),
+      left_wheelRadius_(0.0),
+      right_wheelRadius_(0.0),
+      left_wheel_old_pos_(0.0),
+      right_wheel_old_pos_(0.0),
+      velocity_rolling_window_size_(velocity_rolling_window_size),
+      linear_acc_(RollingWindow::window_size = velocity_rolling_window_size),
+      angular_acc_(RollingWindow::window_size = velocity_rolling_window_size),
+      integrate_fun_(boost::bind(&Odometry::integrateExact, this, _1, _2)) {}
 
-  bool Odometry::update(double left_pos, double right_pos, double dt)
-  {
-    /// Get current wheel joint positions:
-    const double left_wheel_cur_pos  = left_pos  * left_wheelRadius_;
-    const double right_wheel_cur_pos = right_pos * right_wheelRadius_;
+void Odometry::init() {
+  // Reset accumulators:
+  resetAccumulators();
+}
 
-    /// Estimate velocity of wheels using old and current position:
-    const double left_wheel_est_vel  = left_wheel_cur_pos  - left_wheel_old_pos_;
-    const double right_wheel_est_vel = right_wheel_cur_pos - right_wheel_old_pos_;
+bool Odometry::update(double left_pos, double right_pos, double dt) {
+  /// Get current wheel joint positions:
+  const double left_wheel_cur_pos = left_pos * left_wheelRadius_;
+  const double right_wheel_cur_pos = right_pos * right_wheelRadius_;
 
-    /// Update old position with current:
-    left_wheel_old_pos_  = left_wheel_cur_pos;
-    right_wheel_old_pos_ = right_wheel_cur_pos;
+  /// Estimate velocity of wheels using old and current position:
+  const double left_wheel_est_vel = left_wheel_cur_pos - left_wheel_old_pos_;
+  const double right_wheel_est_vel = right_wheel_cur_pos - right_wheel_old_pos_;
 
-    /// Compute linear and angular diff:
-    const double linear  = (right_wheel_est_vel + left_wheel_est_vel) * 0.5 ;
-    const double angular = (right_wheel_est_vel - left_wheel_est_vel) / wheelSeparation_;
+  /// Update old position with current:
+  left_wheel_old_pos_ = left_wheel_cur_pos;
+  right_wheel_old_pos_ = right_wheel_cur_pos;
 
-    /// Integrate odometry:
-    integrate_fun_(linear, angular);
+  /// Compute linear and angular diff:
+  const double linear = (right_wheel_est_vel + left_wheel_est_vel) * 0.5;
+  const double angular =
+      (right_wheel_est_vel - left_wheel_est_vel) / wheelSeparation_;
 
-    /// We cannot estimate the speed with very small time intervals:
-    if (dt < 0.0001)
-      return false; // Interval too small to integrate with
+  /// Integrate odometry:
+  integrate_fun_(linear, angular);
 
-    /// Estimate speeds using a rolling mean to filter them out:
-    linear_acc_(linear/dt);
-    angular_acc_(angular/dt);
+  /// We cannot estimate the speed with very small time intervals:
+  if (dt < 0.0001) return false;  // Interval too small to integrate with
 
-    linear_ = bacc::rolling_mean(linear_acc_);
-    angular_ = bacc::rolling_mean(angular_acc_);
+  /// Estimate speeds using a rolling mean to filter them out:
+  linear_acc_(linear / dt);
+  angular_acc_(angular / dt);
 
-    return true;
-  }
+  linear_ = bacc::rolling_mean(linear_acc_);
+  angular_ = bacc::rolling_mean(angular_acc_);
 
-  void Odometry::updateOpenLoop(double linear, double angular, double dt)
-  {
-    /// Save last linear and angular velocity:
-    linear_ = linear;
-    angular_ = angular;
+  return true;
+}
 
-    /// Integrate odometry:
-    integrate_fun_(linear * dt, angular * dt);
-  }
+void Odometry::updateOpenLoop(double linear, double angular, double dt) {
+  /// Save last linear and angular velocity:
+  linear_ = linear;
+  angular_ = angular;
 
-  void Odometry::setWheelParams(double wheelSeparation, double left_wheelRadius, double right_wheelRadius)
-  {
-    wheelSeparation_   = wheelSeparation;
-    left_wheelRadius_  = left_wheelRadius;
-    right_wheelRadius_ = right_wheelRadius;
-  }
+  /// Integrate odometry:
+  integrate_fun_(linear * dt, angular * dt);
+}
 
-  void Odometry::setVelocityRollingWindowSize(size_t velocity_rolling_window_size)
-  {
-    velocity_rolling_window_size_ = velocity_rolling_window_size;
+void Odometry::setWheelParams(double wheelSeparation, double left_wheelRadius,
+                              double right_wheelRadius) {
+  wheelSeparation_ = wheelSeparation;
+  left_wheelRadius_ = left_wheelRadius;
+  right_wheelRadius_ = right_wheelRadius;
+}
 
-    resetAccumulators();
-  }
+void Odometry::setVelocityRollingWindowSize(
+    size_t velocity_rolling_window_size) {
+  velocity_rolling_window_size_ = velocity_rolling_window_size;
 
-  void Odometry::integrateRungeKutta2(double linear, double angular)
-  {
-    const double direction = heading_ + angular * 0.5;
+  resetAccumulators();
+}
 
-    /// Runge-Kutta 2nd order integration:
-    x_       += linear * cos(direction);
-    y_       += linear * sin(direction);
+void Odometry::integrateRungeKutta2(double linear, double angular) {
+  const double direction = heading_ + angular * 0.5;
+
+  /// Runge-Kutta 2nd order integration:
+  x_ += linear * cos(direction);
+  y_ += linear * sin(direction);
+  heading_ += angular;
+}
+
+/**
+ * \brief Other possible integration method provided by the class
+ * \param linear
+ * \param angular
+ */
+void Odometry::integrateExact(double linear, double angular) {
+  if (fabs(angular) < 1e-6)
+    integrateRungeKutta2(linear, angular);
+  else {
+    /// Exact integration (should solve problems when angular is zero):
+    const double heading_old = heading_;
+    const double r = linear / angular;
     heading_ += angular;
+    x_ += r * (sin(heading_) - sin(heading_old));
+    y_ += -r * (cos(heading_) - cos(heading_old));
   }
+}
 
-  /**
-   * \brief Other possible integration method provided by the class
-   * \param linear
-   * \param angular
-   */
-  void Odometry::integrateExact(double linear, double angular)
-  {
-    if (fabs(angular) < 1e-6)
-      integrateRungeKutta2(linear, angular);
-    else
-    {
-      /// Exact integration (should solve problems when angular is zero):
-      const double heading_old = heading_;
-      const double r = linear/angular;
-      heading_ += angular;
-      x_       +=  r * (sin(heading_) - sin(heading_old));
-      y_       += -r * (cos(heading_) - cos(heading_old));
-    }
-  }
+void Odometry::resetAccumulators() {
+  linear_acc_ = RollingMeanAcc(RollingWindow::window_size =
+                                   velocity_rolling_window_size_);
+  angular_acc_ = RollingMeanAcc(RollingWindow::window_size =
+                                    velocity_rolling_window_size_);
+}
 
-  void Odometry::resetAccumulators()
-  {
-    linear_acc_ = RollingMeanAcc(RollingWindow::window_size = velocity_rolling_window_size_);
-    angular_acc_ = RollingMeanAcc(RollingWindow::window_size = velocity_rolling_window_size_);
-  }
+}  // namespace details
 
-} // namespace details
+namespace bacc = boost::accumulators;
 
-  namespace bacc = boost::accumulators;
+Odometry::Odometry(const std::string& name)
+    : Entity(name),
+      wheelsPositionSIN(
+          NULL, "Odometry(" + name + ")::input(vector)::wheelsPosition"),
+      baseVelocityEstimationSOUT(
+          boost::bind(&Odometry::computeVelocityEstimation, this, _1, _2),
+          wheelsPositionSIN,
+          "Odometry(" + name + ")::output(vector)::baseVelocityEstimation"),
+      baseVelocityFilteredEstimationSOUT(
+          boost::bind(&Odometry::computeVelocityFilteredEstimation, this, _1,
+                      _2),
+          baseVelocityEstimationSOUT,
+          "Odometry(" + name +
+              ")::output(vector)::baseVelocityFilteredEstimation"),
+      baseVelocitySIN(NULL,
+                      "Odometry(" + name + ")::input(vector)::baseVelocity"),
+      baseConfigSOUT(boost::bind(&Odometry::computeBaseConfig, this, _1, _2),
+                     baseVelocitySIN,
+                     "Odometry(" + name + ")::output(vector)::baseConfig"),
+      basePoseSOUT(
+          boost::bind(&Odometry::computeBasePose, this, _1, _2), baseConfigSOUT,
+          "Odometry(" + name + ")::output(matrixHomogeneous)::basePose")
 
-  Odometry::Odometry(const std::string& name)
-  : Entity (name)
-  , wheelsPositionSIN (NULL, "Odometry("+name+")::input(vector)::wheelsPosition")
-  , baseVelocityEstimationSOUT (boost::bind (&Odometry::computeVelocityEstimation, this, _1, _2),
-      wheelsPositionSIN, "Odometry("+name+")::output(vector)::baseVelocityEstimation")
-  , baseVelocityFilteredEstimationSOUT (boost::bind (&Odometry::computeVelocityFilteredEstimation, this, _1, _2),
-      baseVelocityEstimationSOUT, "Odometry("+name+")::output(vector)::baseVelocityFilteredEstimation")
-  , baseVelocitySIN (NULL, "Odometry("+name+")::input(vector)::baseVelocity")
-  , baseConfigSOUT (boost::bind (&Odometry::computeBaseConfig, this, _1, _2),
-      baseVelocitySIN, "Odometry("+name+")::output(vector)::baseConfig")
-  , basePoseSOUT (boost::bind (&Odometry::computeBasePose, this, _1, _2),
-      baseConfigSOUT, "Odometry("+name+")::output(matrixHomogeneous)::basePose")
+      ,
+      dt_(1.),
+      x_(0.0),
+      y_(0.0),
+      heading_(0.0),
+      wheelSeparationInv_(0.0),
+      wheelRadii_(0.0, 0.0),
+      wheelOldPos_(0.0, 0.0),
+      rollingWindowSize_(10),
+      linear_acc_(RollingWindow::window_size = rollingWindowSize_),
+      angular_acc_(RollingWindow::window_size = rollingWindowSize_) {
+  signalRegistration(wheelsPositionSIN << baseVelocityEstimationSOUT
+                                       << baseVelocityFilteredEstimationSOUT
+                                       << baseVelocitySIN << baseConfigSOUT
+                                       << basePoseSOUT);
 
-  , dt_ (1.)
-  , x_(0.0)
-  , y_(0.0)
-  , heading_(0.0)
-  , wheelSeparationInv_(0.0)
-  , wheelRadii_(0.0, 0.0)
-  , wheelOldPos_ (0.0, 0.0)
-  , rollingWindowSize_ (10)
-  , linear_acc_(RollingWindow::window_size = rollingWindowSize_)
-  , angular_acc_(RollingWindow::window_size = rollingWindowSize_)
-  {
-    signalRegistration (
-        wheelsPositionSIN <<
-        baseVelocityEstimationSOUT <<
-        baseVelocityFilteredEstimationSOUT <<
-        baseVelocitySIN <<
-        baseConfigSOUT <<
-        basePoseSOUT);
+  // By default, use the velocity estimation
+  // (i.e. loop closed with wheel position sensors).
+  baseVelocitySIN.plug(&baseVelocityEstimationSOUT);
 
-    // By default, use the velocity estimation
-    // (i.e. loop closed with wheel position sensors).
-    baseVelocitySIN.plug (&baseVelocityEstimationSOUT);
+  addCommand("setWheelParams",
+             command::makeCommandVoid3(
+                 *this, &Odometry::setWheelParams,
+                 command::docCommandVoid3(
+                     "Sets the wheel parameters: radius and separation",
+                     "double: Separation between left and right wheels [m]",
+                     "double: Left wheel radius [m]",
+                     "double: Right wheel radius [m]")));
+  addCommand("setBasePose",
+             command::makeCommandVoid3(
+                 *this, &Odometry::setBasePose,
+                 command::docCommandVoid3(
+                     "Set the base pose to integrate from.", "double: x [m]",
+                     "double: y [m]", "double: heading [rad]")));
+  addCommand("setPeriod",
+             command::makeDirectSetter(*this, &dt_,
+                                       "Set period (only affects the velocity "
+                                       "estimation and nothing else)."));
+  addCommand("getPeriod", command::makeDirectGetter(*this, &dt_, "the period"));
+}
 
-    addCommand ("setWheelParams",
-        command::makeCommandVoid3 (*this, &Odometry::setWheelParams,
-          command::docCommandVoid3 ("Sets the wheel parameters: radius and separation",
-            "double: Separation between left and right wheels [m]",
-            "double: Left wheel radius [m]",
-            "double: Right wheel radius [m]"))
-        );
-    addCommand ("setBasePose",
-        command::makeCommandVoid3 (*this, &Odometry::setBasePose,
-          command::docCommandVoid3 ("Set the base pose to integrate from.",
-            "double: x [m]",
-            "double: y [m]",
-            "double: heading [rad]"))
-        );
-    addCommand ("setPeriod", command::makeDirectSetter (*this, &dt_,
-          "Set period (only affects the velocity estimation and nothing else)."));
-    addCommand ("getPeriod", command::makeDirectGetter (*this, &dt_,
-          "the period"));
-  }
+Vector& Odometry::computeVelocityEstimation(Vector& vel, int time) {
+  vel.resize(2);
+  const Vector& wheelCurAng = wheelsPositionSIN(time);
 
-  Vector& Odometry::computeVelocityEstimation (Vector& vel, int time)
-  {
-    vel.resize(2);
-    const Vector& wheelCurAng = wheelsPositionSIN (time);
+  /// Get current wheel joint positions:
+  Eigen::Array2d wheelCurPos = wheelCurAng.array() * wheelRadii_;
 
-    /// Get current wheel joint positions:
-    Eigen::Array2d wheelCurPos = wheelCurAng.array() * wheelRadii_;
+  /// Estimate velocity of wheels using old and current position:
+  Eigen::Array2d wheelEstVel = (wheelCurPos - wheelOldPos_) / dt_;
 
-    /// Estimate velocity of wheels using old and current position:
-    Eigen::Array2d wheelEstVel = ( wheelCurPos - wheelOldPos_ ) / dt_;
+  /// Update old position with current:
+  wheelOldPos_ = wheelCurPos;
 
-    /// Update old position with current:
-    wheelOldPos_ = wheelCurPos;
+  /// Compute linear and angular diff:
+  vel[0] = (wheelEstVel[1] + wheelEstVel[0]) * 0.5;
+  vel[1] = (wheelEstVel[1] - wheelEstVel[0]) * wheelSeparationInv_;
 
-    /// Compute linear and angular diff:
-    vel[0] = (wheelEstVel[1] + wheelEstVel[0]) * 0.5                ;
-    vel[1] = (wheelEstVel[1] - wheelEstVel[0]) * wheelSeparationInv_;
+  /// Estimate speeds using a rolling mean to filter them out:
+  linear_acc_(vel[0]);
+  angular_acc_(vel[1]);
 
-    /// Estimate speeds using a rolling mean to filter them out:
-    linear_acc_ (vel[0]);
-    angular_acc_(vel[1]);
+  return vel;
+}
 
-    return vel;
-  }
+Vector& Odometry::computeVelocityFilteredEstimation(Vector& vel, int time) {
+  baseVelocityEstimationSOUT.recompute(time);
 
-  Vector& Odometry::computeVelocityFilteredEstimation (Vector& vel, int time)
-  {
-    baseVelocityEstimationSOUT.recompute (time);
+  vel.resize(2);
+  vel[0] = bacc::rolling_mean(linear_acc_);
+  vel[1] = bacc::rolling_mean(angular_acc_);
 
-    vel.resize(2);
-    vel[0] = bacc::rolling_mean(linear_acc_);
-    vel[1] = bacc::rolling_mean(angular_acc_);
+  return vel;
+}
 
-    return vel;
-  }
+Vector& Odometry::computeBaseConfig(Vector& base, int time) {
+  base.resize(3);
+  const Vector& vel = baseVelocitySIN(time);
+  integrateExact(vel[0] * dt_, vel[1] * dt_);
 
-  Vector& Odometry::computeBaseConfig (Vector& base, int time)
-  {
-    base.resize(3);
-    const Vector& vel = baseVelocitySIN (time);
-    integrateExact (vel[0] * dt_, vel[1] * dt_);
+  base << x_, y_, heading_;
+  return base;
+}
 
-    base << x_, y_, heading_;
-    return base;
-  }
+sot::MatrixHomogeneous& Odometry::computeBasePose(sot::MatrixHomogeneous& M,
+                                                  int time) {
+  const Vector& base = baseConfigSOUT(time);
+  M.setIdentity();
+  M.translation().head<2>() = base.head<2>();
+  double c = cos(base(2)), s = sin(base(2));
+  M.linear().topLeftCorner<2, 2>() << c, -s, s, c;
+  return M;
+}
 
-  sot::MatrixHomogeneous& Odometry::computeBasePose (sot::MatrixHomogeneous& M, int time)
-  {
-    const Vector& base = baseConfigSOUT (time);
-    M.setIdentity();
-    M.translation().head<2>() = base.head<2>();
-    double c = cos(base(2)), s = sin(base(2));
-    M.linear().topLeftCorner<2,2>() <<
-      c, -s,
-      s,  c;
-    return M;
-  }
+void Odometry::setBasePose(const double& x, const double& y,
+                           const double& heading) {
+  x_ = x;
+  y_ = y;
+  heading_ = heading;
 
-  void Odometry::setBasePose (const double& x, const double& y, const double& heading)
-  {
-    x_ = x;
-    y_ = y;
-    heading_ = heading;
+  resetAccumulators();
+}
 
-    resetAccumulators ();
-  }
+void Odometry::setWheelParams(const double& wheelSeparation,
+                              const double& leftWheelRadius,
+                              const double& rightWheelRadius) {
+  wheelSeparationInv_ = 1 / wheelSeparation;
+  wheelRadii_ << leftWheelRadius, rightWheelRadius;
+}
 
-  void Odometry::setWheelParams(const double& wheelSeparation, const double& leftWheelRadius, const double& rightWheelRadius)
-  {
-    wheelSeparationInv_   = 1/wheelSeparation;
-    wheelRadii_  << leftWheelRadius, rightWheelRadius;
-  }
+void Odometry::setVelocityRollingWindowSize(const size_t& rollingWindowSize) {
+  rollingWindowSize_ = rollingWindowSize;
+  resetAccumulators();
+}
 
-  void Odometry::setVelocityRollingWindowSize(const size_t& rollingWindowSize)
-  {
-    rollingWindowSize_ = rollingWindowSize;
-    resetAccumulators ();
-  }
+void Odometry::integrateRungeKutta2(double linear, double angular) {
+  const double direction = heading_ + angular * 0.5;
 
-  void Odometry::integrateRungeKutta2(double linear, double angular)
-  {
-    const double direction = heading_ + angular * 0.5;
+  /// Runge-Kutta 2nd order integration:
+  x_ += linear * cos(direction);
+  y_ += linear * sin(direction);
+  heading_ += angular;
+}
 
-    /// Runge-Kutta 2nd order integration:
-    x_       += linear * cos(direction);
-    y_       += linear * sin(direction);
+/**
+ * \brief Other possible integration method provided by the class
+ * \param linear
+ * \param angular
+ */
+void Odometry::integrateExact(double linear, double angular) {
+  if (fabs(angular) < 1e-6)
+    integrateRungeKutta2(linear, angular);
+  else {
+    /// Exact integration (should solve problems when angular is zero):
+    const double heading_old = heading_;
+    const double r = linear / angular;
     heading_ += angular;
+    x_ += r * (sin(heading_) - sin(heading_old));
+    y_ += -r * (cos(heading_) - cos(heading_old));
   }
+}
 
-  /**
-   * \brief Other possible integration method provided by the class
-   * \param linear
-   * \param angular
-   */
-  void Odometry::integrateExact(double linear, double angular)
-  {
-    if (fabs(angular) < 1e-6)
-      integrateRungeKutta2(linear, angular);
-    else
-    {
-      /// Exact integration (should solve problems when angular is zero):
-      const double heading_old = heading_;
-      const double r = linear/angular;
-      heading_ += angular;
-      x_       +=  r * (sin(heading_) - sin(heading_old));
-      y_       += -r * (cos(heading_) - cos(heading_old));
-    }
-  }
+void Odometry::resetAccumulators() {
+  linear_acc_ = RollingMeanAcc(RollingWindow::window_size = rollingWindowSize_);
+  angular_acc_ =
+      RollingMeanAcc(RollingWindow::window_size = rollingWindowSize_);
+}
 
-  void Odometry::resetAccumulators()
-  {
-    linear_acc_  = RollingMeanAcc(RollingWindow::window_size = rollingWindowSize_);
-    angular_acc_ = RollingMeanAcc(RollingWindow::window_size = rollingWindowSize_);
-  }
+DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(Odometry, "Odometry");
 
-  DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN (Odometry, "Odometry");
-
-} // namespace diff_drive_controller
+}  // namespace dynamicgraph
