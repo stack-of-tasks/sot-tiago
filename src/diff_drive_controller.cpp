@@ -36,6 +36,9 @@
  * Author: Bence Magyar, Enrique Fernández
  */
 
+#include <pinocchio/fwd.hpp>
+// include pinocchio before boost
+
 #include <diff_drive_controller.h>
 #include <dynamic-graph/command-bind.h>
 #include <dynamic-graph/command-direct-getter.h>

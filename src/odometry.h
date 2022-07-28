@@ -42,6 +42,9 @@
 #ifndef ODOMETRY_H_
 #define ODOMETRY_H_
 
+#include "pinocchio/fwd.hpp"
+// include pinocchio before boost
+
 #include <dynamic-graph/entity.h>
 #include <dynamic-graph/signal-ptr.h>
 #include <dynamic-graph/signal-time-dependent.h>
@@ -51,8 +54,6 @@
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/function.hpp>
 #include <sot/core/matrix-geometry.hh>
-
-#include "pinocchio/fwd.hpp"
 
 namespace dynamicgraph {
 namespace details {

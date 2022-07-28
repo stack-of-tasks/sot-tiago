@@ -11,15 +11,17 @@
  *
  */
 
-#include "sot-tiago-controller.hh"
+#include <pinocchio/fwd.hpp>
+// include pinocchio before boost
 
 #include <boost/thread/condition.hpp>
 #include <boost/thread/thread.hpp>
 #include <dynamic_graph_bridge/ros_init.hh>
 #include <dynamic_graph_bridge/ros_interpreter.hh>
-#include <pinocchio/fwd.hpp>
 #include <sot/core/debug.hh>
 #include <sot/core/exception-abstract.hh>
+
+#include "sot-tiago-controller.hh"
 const std::string SoTTiagoController::LOG_PYTHON =
     "/tmp/TiagoController_python.out";
 
