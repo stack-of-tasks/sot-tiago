@@ -29,12 +29,11 @@ compute_project_args(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Project dependencies
-add_project_dependency(sot-dynamic-pinocchio REQUIRED)
 add_project_dependency(dynamic-graph-python 4.0.6 REQUIRED)
+add_project_dependency(sot-dynamic-pinocchio REQUIRED)
 add_project_dependency(dynamic_graph_bridge REQUIRED)
 add_project_dependency(tiago_data)
 add_required_dependency(dynamic_graph_bridge_msgs)
-include(cmake/python.cmake) # TODO: overwriting eigenpy/python.cmake
 
 # Main Library
 add_library(${PROJECT_NAME} INTERFACE)
