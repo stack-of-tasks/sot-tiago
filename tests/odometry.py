@@ -55,7 +55,6 @@ def runCircle(N):
 
 
 def runAndPlotCircle(N):
-
     xyt = runCircle(N)
     plt.plot([x[0] for x in xyt], [x[1] for x in xyt])
     plt.show()
