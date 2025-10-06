@@ -31,7 +31,7 @@ boost::condition_variable cond;
 boost::mutex mut;
 bool data_ready;
 
-void workThread(SoTTiagoController *aSoTTiago) {
+void workThread(SoTTiagoController* aSoTTiago) {
   dynamicgraph::Interpreter aLocalInterpreter(
       dynamicgraph::rosInit(false, true));
 
@@ -69,27 +69,27 @@ void SoTTiagoController::init() {
 SoTTiagoController::~SoTTiagoController() {}
 
 void SoTTiagoController::setupSetSensors(
-    map<string, dgsot::SensorValues> &SensorsIn) {
+    map<string, dgsot::SensorValues>& SensorsIn) {
   device_->setupSetSensors(SensorsIn);
 }
 
 void SoTTiagoController::nominalSetSensors(
-    map<string, dgsot::SensorValues> &SensorsIn) {
+    map<string, dgsot::SensorValues>& SensorsIn) {
   device_->nominalSetSensors(SensorsIn);
 }
 
 void SoTTiagoController::cleanupSetSensors(
-    map<string, dgsot::SensorValues> &SensorsIn) {
+    map<string, dgsot::SensorValues>& SensorsIn) {
   device_->cleanupSetSensors(SensorsIn);
 }
 
 void SoTTiagoController::getControl(
-    map<string, dgsot::ControlValues> &controlOut) {
+    map<string, dgsot::ControlValues>& controlOut) {
   try {
     sotDEBUG(25) << __FILE__ << __FUNCTION__ << "(#" << __LINE__ << ")" << endl;
     device_->getControl(controlOut);
     sotDEBUG(25) << __FILE__ << __FUNCTION__ << "(#" << __LINE__ << ")" << endl;
-  } catch (dynamicgraph::sot::ExceptionAbstract &err) {
+  } catch (dynamicgraph::sot::ExceptionAbstract& err) {
     std::cout << __FILE__ << " " << __FUNCTION__ << " (" << __LINE__ << ") "
               << err.getStringMessage() << endl;
     throw err;
@@ -102,9 +102,9 @@ void SoTTiagoController::setSecondOrderIntegration(void) {
   device_->setSecondOrderIntegration();
 }
 
-void SoTTiagoController::runPython(std::ostream &file,
-                                   const std::string &command,
-                                   dynamicgraph::Interpreter &interpreter) {
+void SoTTiagoController::runPython(std::ostream& file,
+                                   const std::string& command,
+                                   dynamicgraph::Interpreter& interpreter) {
   file << ">>> " << command << std::endl;
   std::string lerr(""), lout(""), lres("");
   interpreter.runCommand(command, lres, lout, lerr);

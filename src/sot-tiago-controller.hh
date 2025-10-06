@@ -32,13 +32,13 @@ class SoTTiagoController : public dgsot::AbstractSotExternalInterface {
   SoTTiagoController(std::string robotName);
   virtual ~SoTTiagoController();
 
-  void setupSetSensors(std::map<std::string, dgsot::SensorValues> &sensorsIn);
+  void setupSetSensors(std::map<std::string, dgsot::SensorValues>& sensorsIn);
 
-  void nominalSetSensors(std::map<std::string, dgsot::SensorValues> &sensorsIn);
+  void nominalSetSensors(std::map<std::string, dgsot::SensorValues>& sensorsIn);
 
-  void cleanupSetSensors(std::map<std::string, dgsot::SensorValues> &sensorsIn);
+  void cleanupSetSensors(std::map<std::string, dgsot::SensorValues>& sensorsIn);
 
-  void getControl(std::map<std::string, dgsot::ControlValues> &anglesOut);
+  void getControl(std::map<std::string, dgsot::ControlValues>& anglesOut);
 
   void setNoIntegration(void);
   void setSecondOrderIntegration(void);
@@ -49,16 +49,16 @@ class SoTTiagoController : public dgsot::AbstractSotExternalInterface {
  protected:
   // Update output port with the control computed from the
   // dynamic graph.
-  void updateRobotState(std::vector<double> &anglesIn);
+  void updateRobotState(std::vector<double>& anglesIn);
 
-  void runPython(std::ostream &file, const std::string &command,
-                 dynamicgraph::Interpreter &interpreter);
+  void runPython(std::ostream& file, const std::string& command,
+                 dynamicgraph::Interpreter& interpreter);
 
   virtual void startupPython();
 
   void init();
 
-  SoTTiagoDevice *device_;
+  SoTTiagoDevice* device_;
 };
 
 #endif /* _SOT_TiagoController_H_ */

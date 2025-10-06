@@ -63,13 +63,13 @@ void SoTTiagoSteelController::startupPython() {
 }
 
 extern "C" {
-dgsot::AbstractSotExternalInterface *createSotExternalInterface() {
+dgsot::AbstractSotExternalInterface* createSotExternalInterface() {
   return new SoTTiagoSteelController();
 }
 }
 
 extern "C" {
-void destroySotExternalInterface(dgsot::AbstractSotExternalInterface *p) {
+void destroySotExternalInterface(dgsot::AbstractSotExternalInterface* p) {
   delete p;
 }
 }
