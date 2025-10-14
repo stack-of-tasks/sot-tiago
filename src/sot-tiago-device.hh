@@ -35,20 +35,20 @@ class SoTTiagoDevice : public dgsot::Device {
   static const std::string CLASS_NAME;
   static const double TIMESTEP_DEFAULT;
 
-  virtual const std::string &getClassName() const { return CLASS_NAME; }
+  virtual const std::string& getClassName() const { return CLASS_NAME; }
 
   SoTTiagoDevice(std::string RobotName);
   virtual ~SoTTiagoDevice();
 
-  void setSensors(std::map<std::string, dgsot::SensorValues> &sensorsIn);
+  void setSensors(std::map<std::string, dgsot::SensorValues>& sensorsIn);
 
-  void setupSetSensors(std::map<std::string, dgsot::SensorValues> &sensorsIn);
+  void setupSetSensors(std::map<std::string, dgsot::SensorValues>& sensorsIn);
 
-  void nominalSetSensors(std::map<std::string, dgsot::SensorValues> &sensorsIn);
+  void nominalSetSensors(std::map<std::string, dgsot::SensorValues>& sensorsIn);
 
-  void cleanupSetSensors(std::map<std::string, dgsot::SensorValues> &sensorsIn);
+  void cleanupSetSensors(std::map<std::string, dgsot::SensorValues>& sensorsIn);
 
-  void getControl(std::map<std::string, dgsot::ControlValues> &anglesOut);
+  void getControl(std::map<std::string, dgsot::ControlValues>& anglesOut);
 
   void setLeftWheelIndex(int idx);
 
@@ -58,7 +58,7 @@ class SoTTiagoDevice : public dgsot::Device {
   void setTimeStep(double dt) { timestep_ = dt; }
 
  protected:
-  void setClosedLoop(const bool &closedLoop) { closedLoop_ = closedLoop; };
+  void setClosedLoop(const bool& closedLoop) { closedLoop_ = closedLoop; };
 
   /// \brief Whether the control of the base should be expressed in odometry
   ///        frame of base frame.
